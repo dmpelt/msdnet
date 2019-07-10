@@ -1,0 +1,2 @@
+include msdnet/*.png
+exclude msdnet/*.c

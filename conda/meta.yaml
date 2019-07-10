@@ -1,0 +1,35 @@
+package:
+  name: msdnet
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ../
+  
+build:
+  number: {{ GIT_DESCRIBE_NUMBER }}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+  host:
+    - python {{ python }}
+    - setuptools
+    - scikit-build
+    - openmp
+  run:
+    - python
+    - numpy >=1.12
+    - tifffile
+    - scikit-image
+    - psutil
+    - h5py
+    - tqdm
+    - numba >=0.41
+    - cudatoolkit
+    - imageio
+    - openmp
+    
+test:
+  # Python imports
+  imports:
+    - msdnet
