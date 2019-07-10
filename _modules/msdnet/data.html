@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.data &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msdnet.data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msdnet.data</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/msdnet/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of MSDNet, a Python implementation of the</span>
+<span class="c1">#Mixed-Scale Dense Convolutional Neural Network.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for image data input.</span>
+
+<span class="sd">Below, :math:`N_{c}` is the number of image channels, and :math:`N_{x} \\times N_{y}` the image dimensions in pixels.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">tifffile</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<div class="viewcode-block" id="DataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.DataPoint">[docs]</a><span class="k">class</span> <span class="nc">DataPoint</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for a single data point (input image with corresponding target image)&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Input image&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getinputarray</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Target image&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gettargetarray</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mask image&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getmaskarray</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.DataPoint.getinputarray">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return input image.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="DataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.DataPoint.gettargetarray">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return target image.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="DataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.DataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return mask image.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="DataPoint.getall"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.DataPoint.getall">[docs]</a>    <span class="k">def</span> <span class="nf">getall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return input image, target image, and mask image (when given).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span></div></div>
+
+<div class="viewcode-block" id="OnlyAllDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OnlyAllDataPoint">[docs]</a><span class="k">class</span> <span class="nc">OnlyAllDataPoint</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for a single data point (input image with corresponding target image)</span>
+<span class="sd">    that can only return all images at once (i.e. `getall`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">errormsg</span> <span class="o">=</span> <span class="s2">&quot;Only getall supported&quot;</span>
+
+<div class="viewcode-block" id="OnlyAllDataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OnlyAllDataPoint.getinputarray">[docs]</a>    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">OnlyAllDataPoint</span><span class="o">.</span><span class="n">errormsg</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="OnlyAllDataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OnlyAllDataPoint.gettargetarray">[docs]</a>    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">OnlyAllDataPoint</span><span class="o">.</span><span class="n">errormsg</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="OnlyAllDataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OnlyAllDataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">OnlyAllDataPoint</span><span class="o">.</span><span class="n">errormsg</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="OnlyAllDataPoint.getall"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OnlyAllDataPoint.getall">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="BatchProvider"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.BatchProvider">[docs]</a><span class="k">class</span> <span class="nc">BatchProvider</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object that returns small random batches of datapoints.</span>
+<span class="sd">    </span>
+<span class="sd">    :param dlist: List of :class:`DataPoint`.</span>
+<span class="sd">    :param batchsize: Number of datapoints per batch.</span>
+<span class="sd">    :param seed: (optional) Random seed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dlist</span><span class="p">,</span> <span class="n">batchsize</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">dlist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rndm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rndm</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bsize</span> <span class="o">=</span> <span class="n">batchsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<div class="viewcode-block" id="BatchProvider.getbatch"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.BatchProvider.getbatch">[docs]</a>    <span class="k">def</span> <span class="nf">getbatch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return batch of datapoints.&quot;&quot;&quot;</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">bsize</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rndm</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">batch</span></div></div>
+
+<div class="viewcode-block" id="ArrayDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ArrayDataPoint">[docs]</a><span class="k">class</span> <span class="nc">ArrayDataPoint</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Datapoint with numpy array image data.</span>
+<span class="sd">    </span>
+<span class="sd">    :param inputarray: numpy array with input image (size: :math:`N_{c} \\times N_{x} \\times N_{y}`)</span>
+<span class="sd">    :param targetarray: (optional) numpy array with target image (size: :math:`N_{c} \\times N_{x} \\times N_{y}`)</span>
+<span class="sd">    :param maskarray: (optional) numpy array with mask image (size: :math:`N_{c} \\times N_{x} \\times N_{y}`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputarray</span><span class="p">,</span> <span class="n">targetarray</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maskarray</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iarr</span> <span class="o">=</span> <span class="n">inputarray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">targetarray</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tarr</span> <span class="o">=</span> <span class="n">targetarray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tarr</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">maskarray</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">marr</span> <span class="o">=</span> <span class="n">maskarray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">marr</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="ArrayDataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ArrayDataPoint.getinputarray">[docs]</a>    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">iarr</span></div>
+    
+<div class="viewcode-block" id="ArrayDataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ArrayDataPoint.gettargetarray">[docs]</a>    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tarr</span></div>
+
+<div class="viewcode-block" id="ArrayDataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ArrayDataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">marr</span></div></div>
+
+<div class="viewcode-block" id="ImageFileDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ImageFileDataPoint">[docs]</a><span class="k">class</span> <span class="nc">ImageFileDataPoint</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Datapoint with image files. Supported are: TIFFs and most standard image formats (e.g. PNG and JPEG).</span>
+<span class="sd">    </span>
+<span class="sd">    :param inputfile: file name of input image</span>
+<span class="sd">    :param targetfile: (optional) file name of target image</span>
+<span class="sd">    :param maskfile: (optional) file name of mask image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maskfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ifn</span> <span class="o">=</span> <span class="n">inputfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfn</span> <span class="o">=</span> <span class="n">targetfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mfn</span> <span class="o">=</span> <span class="n">maskfile</span>
+    
+    <span class="k">def</span> <span class="nf">__fix_image_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">im</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">im</span>
+    
+    <span class="k">def</span> <span class="nf">__readimage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fix_image_dimensions</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ImageFileDataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ImageFileDataPoint.getinputarray">[docs]</a>    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__readimage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ifn</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ImageFileDataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ImageFileDataPoint.gettargetarray">[docs]</a>    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__readimage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfn</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ImageFileDataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.ImageFileDataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mfn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mfn</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mfn</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">im</span></div></div>
+
+<div class="viewcode-block" id="OneHotDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OneHotDataPoint">[docs]</a><span class="k">class</span> <span class="nc">OneHotDataPoint</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Datapoint that converts a data point with a labeled image to</span>
+<span class="sd">    one-hot images.</span>
+<span class="sd">    </span>
+<span class="sd">    :param datapoint: input :class:`DataPoint`</span>
+<span class="sd">    :param labels: list of numberical labels in label image</span>
+<span class="sd">    :param maskunlabeled: (optional) whether to mask out unlabeled pixels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoint</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">maskunlabeled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dp</span> <span class="o">=</span> <span class="n">datapoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">munl</span> <span class="o">=</span> <span class="n">maskunlabeled</span>
+    
+<div class="viewcode-block" id="OneHotDataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OneHotDataPoint.getinputarray">[docs]</a>    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">getinputarray</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="OneHotDataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OneHotDataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">munl</span><span class="p">:</span>
+            <span class="n">tar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gettargetarray</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">tar</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">getmaskarray</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="OneHotDataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.OneHotDataPoint.gettargetarray">[docs]</a>    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">gettargetarray</span><span class="p">()</span>
+        <span class="n">oh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">oh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">im</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oh</span></div></div>
+
+<div class="viewcode-block" id="SlabDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.SlabDataPoint">[docs]</a><span class="k">class</span> <span class="nc">SlabDataPoint</span><span class="p">(</span><span class="n">DataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Datapoint that represents a slab of data points.</span>
+<span class="sd">    </span>
+<span class="sd">    :param datapoints: list of :class:`DataPoint`.</span>
+<span class="sd">    :param flip: (optional) whether to augment data by also flipping slab.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoints</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of datapoints must be odd&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="n">flip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curflip</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="SlabDataPoint.getinputarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.SlabDataPoint.getinputarray">[docs]</a>    <span class="k">def</span> <span class="nf">getinputarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curflip</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curflip</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">curflip</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">getinputarray</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">getinputarray</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="SlabDataPoint.gettargetarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.SlabDataPoint.gettargetarray">[docs]</a>    <span class="k">def</span> <span class="nf">gettargetarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">gettargetarray</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="SlabDataPoint.getmaskarray"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.SlabDataPoint.getmaskarray">[docs]</a>    <span class="k">def</span> <span class="nf">getmaskarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nd</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getmaskarray</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="convert_to_slabs"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.convert_to_slabs">[docs]</a><span class="k">def</span> <span class="nf">convert_to_slabs</span><span class="p">(</span><span class="n">datapoints</span><span class="p">,</span> <span class="n">n_above_and_below</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">reflective_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a list of datapoints (representing a 3D volume) to</span>
+<span class="sd">    a list of datapoints of slabs.</span>
+<span class="sd">    </span>
+<span class="sd">    :param datapoints: list of :class:`DataPoint`.</span>
+<span class="sd">    :param n_above_and_below: number of slices to take above and below each slice.</span>
+<span class="sd">    :param flip: (optional) whether to augment data by also flipping slab.</span>
+<span class="sd">    :param reflective_boundary: (optional) whether to use reflective boundary at top and bottom</span>
+<span class="sd">    :return: list of :class:`DataPoint`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">n_above_and_below</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="n">slablist</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">reflective_boundary</span><span class="p">:</span>
+        <span class="n">curlist</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">([],</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">idxlist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_above_and_below</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n_above_and_below</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxlist</span><span class="p">:</span>
+            <span class="n">curlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datapoints</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">slablist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlabDataPoint</span><span class="p">(</span><span class="n">curlist</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_above_and_below</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">curlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datapoints</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">slablist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlabDataPoint</span><span class="p">(</span><span class="n">curlist</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">))</span>    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">curlist</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">(</span><span class="n">datapoints</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">slablist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlabDataPoint</span><span class="p">(</span><span class="n">curlist</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)):</span>
+        <span class="n">curlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datapoints</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">slablist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlabDataPoint</span><span class="p">(</span><span class="n">curlist</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">reflective_boundary</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_above_and_below</span><span class="p">):</span>
+            <span class="n">curlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datapoints</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">slablist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SlabDataPoint</span><span class="p">(</span><span class="n">curlist</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">slablist</span></div>
+
+
+<div class="viewcode-block" id="RotateAndFlipDataPoint"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.RotateAndFlipDataPoint">[docs]</a><span class="k">class</span> <span class="nc">RotateAndFlipDataPoint</span><span class="p">(</span><span class="n">OnlyAllDataPoint</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Datapoint that augments input datapoint with rotations and flips.</span>
+<span class="sd">    </span>
+<span class="sd">    :param datapoint: input :class:`DataPoint`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoint</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dp</span> <span class="o">=</span> <span class="n">datapoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__resetlist</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__resetlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="RotateAndFlipDataPoint.getall"><a class="viewcode-back" href="../../apiref/msdnet.data.html#msdnet.data.RotateAndFlipDataPoint.getall">[docs]</a>    <span class="k">def</span> <span class="nf">getall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">inp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">input</span>
+        <span class="n">tar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">target</span>
+        <span class="n">msk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">mask</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__resetlist</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">c</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tar</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[:,:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tar</span><span class="p">[:,:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tar</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">4</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">tar</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">tar</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">6</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">tar</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">7</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">tar</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+        <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">tar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">msk</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">msk</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">msk</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">4</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">msk</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">msk</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">6</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">msk</span><span class="p">,</span><span class="mi">1</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">c</span><span class="o">==</span><span class="mi">7</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">msk</span><span class="p">,</span><span class="mi">3</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">msk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">,</span> <span class="n">msk</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

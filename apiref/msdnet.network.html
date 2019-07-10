@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.network module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.operations module" href="msdnet.operations.html" />
+    <link rel="prev" title="msdnet.loggers module" href="msdnet.loggers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.network module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.network.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.network">
+<span id="msdnet-network-module"></span><h1>msdnet.network module<a class="headerlink" href="#module-msdnet.network" title="Permalink to this headline">¶</a></h1>
+<p>Module implementing neural networks.</p>
+<dl class="class">
+<dt id="msdnet.network.Network">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.network.</code><code class="sig-name descname">Network</code><a class="reference internal" href="../_modules/msdnet/network.html#Network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class for a neural network.</p>
+<dl class="method">
+<dt id="msdnet.network.Network.forward">
+<em class="property">abstract </em><code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param">im</em>, <em class="sig-param">returnoutput=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a forward pass of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>im</strong> – input image (channels x rows x columns)</p></li>
+<li><p><strong>returnoutput</strong> – whether to return the output image (default: True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output image (channels x rows x columns)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.backward">
+<em class="property">abstract </em><code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param">im</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a backpropagation pass of the network. Sensitivity maps of
+each intermediate image are stored within the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>im</strong> – error gradient image (channels x rows x columns)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.gradient_zero">
+<em class="property">abstract </em><code class="sig-name descname">gradient_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.gradient_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.gradient_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all gradient variables to zero.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.gradient">
+<em class="property">abstract </em><code class="sig-name descname">gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradient variables using computed sensitivity maps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.getgradients">
+<em class="property">abstract </em><code class="sig-name descname">getgradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.getgradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.getgradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a flat array with all gradient variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all gradient variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.updategradients">
+<code class="sig-name descname">updategradients</code><span class="sig-paren">(</span><em class="sig-param">u</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.updategradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.updategradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update variables of network within a thread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>u</strong> – update variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.updategradients_internal">
+<em class="property">abstract </em><code class="sig-name descname">updategradients_internal</code><span class="sig-paren">(</span><em class="sig-param">u</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.updategradients_internal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.updategradients_internal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update variables of network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>u</strong> – update variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.to_dict">
+<em class="property">abstract </em><code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing all network variables and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.load_dict">
+<em class="property">abstract </em><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all network variables and parameters from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.from_dict">
+<em class="property">abstract classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em>, <em class="sig-param">gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize network and all network variables and parameters from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.from_file">
+<em class="property">classmethod </em><code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">gpu=True</em>, <em class="sig-param">groupname='network'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize network and all network variables and parameters from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> – filename</p></li>
+<li><p><strong>gpu</strong> – (optional) whether to use GPU or CPU</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.to_file">
+<code class="sig-name descname">to_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">groupname='network'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save all network variables and parameters to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – filename</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.Network.normalizeinout">
+<code class="sig-name descname">normalizeinout</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#Network.normalizeinout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.Network.normalizeinout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize input and output of network to zero mean and unit variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datapoints</strong> – list of datapoints to compute normalization factors with.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.network.MSDNet">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.network.</code><code class="sig-name descname">MSDNet</code><span class="sig-paren">(</span><em class="sig-param">d</em>, <em class="sig-param">dil</em>, <em class="sig-param">nin</em>, <em class="sig-param">nout</em>, <em class="sig-param">gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.network.Network</span></code></a></p>
+<p>Main implementation of a Mixed-Scale Dense network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> – depth of network (width is always 1)</p></li>
+<li><p><strong>dil</strong> – <a class="reference internal" href="msdnet.dilations.html#msdnet.dilations.Dilations" title="msdnet.dilations.Dilations"><code class="xref py py-class docutils literal notranslate"><span class="pre">dilations.Dilations</span></code></a> class defining dilations</p></li>
+<li><p><strong>nin</strong> – number of input channels</p></li>
+<li><p><strong>nout</strong> – number of output channels</p></li>
+<li><p><strong>gpu</strong> – (optional) whether to use GPU or CPU</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.network.MSDNet.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param">im</em>, <em class="sig-param">returnoutput=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a forward pass of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>im</strong> – input image (channels x rows x columns)</p></li>
+<li><p><strong>returnoutput</strong> – whether to return the output image (default: True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output image (channels x rows x columns)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.backward">
+<code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param">im</em>, <em class="sig-param">inputdelta=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a backpropagation pass of the network. Sensitivity maps of
+each intermediate image are stored within the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>im</strong> – error gradient image (channels x rows x columns)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize network parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.gradient_zero">
+<code class="sig-name descname">gradient_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.gradient_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.gradient_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all gradient variables to zero.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.gradient">
+<code class="sig-name descname">gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradient variables using computed sensitivity maps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.filtergradient">
+<code class="sig-name descname">filtergradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.filtergradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.filtergradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute filter gradient values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.getgradients">
+<code class="sig-name descname">getgradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.getgradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.getgradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a flat array with all gradient variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all gradient variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.updategradients_internal">
+<code class="sig-name descname">updategradients_internal</code><span class="sig-paren">(</span><em class="sig-param">u</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.updategradients_internal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.updategradients_internal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update variables of network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>u</strong> – update variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.setinputscale">
+<code class="sig-name descname">setinputscale</code><span class="sig-paren">(</span><em class="sig-param">gamma</em>, <em class="sig-param">offset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.setinputscale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.setinputscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set input normalization values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.setoutputscale">
+<code class="sig-name descname">setoutputscale</code><span class="sig-paren">(</span><em class="sig-param">gamma</em>, <em class="sig-param">offset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.setoutputscale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.setoutputscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set output normalization values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.scaleinput">
+<code class="sig-name descname">scaleinput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.scaleinput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.scaleinput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.scaleoutput">
+<code class="sig-name descname">scaleoutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.scaleoutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.scaleoutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale output image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.scaleoutputback">
+<code class="sig-name descname">scaleoutputback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.scaleoutputback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.scaleoutputback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale output image during backpropagation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.normalizeinput">
+<code class="sig-name descname">normalizeinput</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.normalizeinput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.normalizeinput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize input of network to zero mean and unit variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datapoints</strong> – list of datapoints to compute normalization factors with.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.normalizeoutput">
+<code class="sig-name descname">normalizeoutput</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.normalizeoutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.normalizeoutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize output of network to zero mean and unit variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datapoints</strong> – list of datapoints to compute normalization factors with.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing all network variables and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.load_dict">
+<code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all network variables and parameters from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.MSDNet.from_dict">
+<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em>, <em class="sig-param">gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#MSDNet.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.MSDNet.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize network and all network variables and parameters from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.network.SegmentationMSDNet">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.network.</code><code class="sig-name descname">SegmentationMSDNet</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#SegmentationMSDNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.SegmentationMSDNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.network.MSDNet" title="msdnet.network.MSDNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.network.MSDNet</span></code></a></p>
+<p>Main implementation of a Mixed-Scale Dense network for segmentation.</p>
+<p>Same parameters as <a class="reference internal" href="#msdnet.network.MSDNet" title="msdnet.network.MSDNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">MSDNet</span></code></a>.</p>
+<dl class="method">
+<dt id="msdnet.network.SegmentationMSDNet.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param">im</em>, <em class="sig-param">returnoutput=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#SegmentationMSDNet.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.SegmentationMSDNet.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a forward pass of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>im</strong> – input image (channels x rows x columns)</p></li>
+<li><p><strong>returnoutput</strong> – whether to return the output image (default: True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output image (channels x rows x columns)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.network.SegmentationMSDNet.normalizeoutput">
+<code class="sig-name descname">normalizeoutput</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/network.html#SegmentationMSDNet.normalizeoutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.network.SegmentationMSDNet.normalizeoutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize output of network to zero mean and unit variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datapoints</strong> – list of datapoints to compute normalization factors with.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.operations.html" class="btn btn-neutral float-right" title="msdnet.operations module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.loggers.html" class="btn btn-neutral float-left" title="msdnet.loggers module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

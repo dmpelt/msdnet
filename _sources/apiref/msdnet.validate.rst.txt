@@ -1,0 +1,7 @@
+msdnet.validate module
+======================
+
+.. automodule:: msdnet.validate
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,26 @@
+msdnet package
+==============
+
+Submodules
+----------
+
+.. toctree::
+
+   msdnet.data
+   msdnet.dilations
+   msdnet.gpuoperations
+   msdnet.loggers
+   msdnet.network
+   msdnet.operations
+   msdnet.store
+   msdnet.train
+   msdnet.utils
+   msdnet.validate
+
+Module contents
+---------------
+
+.. automodule:: msdnet
+   :members:
+   :undoc-members:
+   :show-inheritance:

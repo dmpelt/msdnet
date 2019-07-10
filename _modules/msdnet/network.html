@@ -1,0 +1,648 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.network &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msdnet.network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msdnet.network</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/msdnet/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of MSDNet, a Python implementation of the</span>
+<span class="c1">#Mixed-Scale Dense Convolutional Neural Network.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;Module implementing neural networks.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">operations</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">store</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for a neural network.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Network.forward"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.forward">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">returnoutput</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute a forward pass of the network.</span>
+
+<span class="sd">        :param im: input image (channels x rows x columns)</span>
+<span class="sd">        </span>
+<span class="sd">        :param returnoutput: whether to return the output image (default: True)</span>
+<span class="sd">        </span>
+<span class="sd">        :return: output image (channels x rows x columns)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.backward"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.backward">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute a backpropagation pass of the network. Sensitivity maps of</span>
+<span class="sd">        each intermediate image are stored within the network.</span>
+
+<span class="sd">        :param im: error gradient image (channels x rows x columns)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.gradient_zero"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.gradient_zero">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">gradient_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set all gradient variables to zero.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.gradient"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.gradient">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute gradient variables using computed sensitivity maps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.getgradients"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.getgradients">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">getgradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a flat array with all gradient variables.</span>
+
+<span class="sd">        :return: all gradient variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.updategradients"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.updategradients">[docs]</a>    <span class="k">def</span> <span class="nf">updategradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update variables of network within a thread.</span>
+
+<span class="sd">        :param u: update variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Run __updategradients in thread to prevent SIGINT</span>
+        <span class="n">thrd</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">updategradients_internal</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">u</span><span class="p">,))</span>
+        <span class="n">thrd</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">thrd</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Network.updategradients_internal"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.updategradients_internal">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">updategradients_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update variables of network.</span>
+
+<span class="sd">        :param u: update variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Network.to_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.to_dict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a dictionary containing all network variables and parameters.</span>
+
+<span class="sd">        :return: all network variables and parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.load_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.load_dict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set all network variables and parameters from dictionary.</span>
+
+<span class="sd">        :param dct: all network variables and parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.from_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dct</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize network and all network variables and parameters from dictionary.</span>
+
+<span class="sd">        :param dct: all network variables and parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Network.from_file"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">groupname</span><span class="o">=</span><span class="s1">&#39;network&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize network and all network variables and parameters from file.</span>
+
+<span class="sd">        :param fn: filename</span>
+<span class="sd">        :param gpu: (optional) whether to use GPU or CPU</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get_dict</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Network.to_file"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">groupname</span><span class="o">=</span><span class="s1">&#39;network&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save all network variables and parameters to file.</span>
+
+<span class="sd">        :param fn: filename</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">store_dict</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div>
+    
+<div class="viewcode-block" id="Network.normalizeinout"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.Network.normalizeinout">[docs]</a>    <span class="k">def</span> <span class="nf">normalizeinout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoints</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize input and output of network to zero mean and unit variance.</span>
+
+<span class="sd">        :param datapoints: list of datapoints to compute normalization factors with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalizeinput</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalizeoutput</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="MSDNet"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet">[docs]</a><span class="k">class</span> <span class="nc">MSDNet</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main implementation of a Mixed-Scale Dense network.</span>
+<span class="sd">    </span>
+<span class="sd">    :param d: depth of network (width is always 1)</span>
+<span class="sd">    :param dil: :class:`.dilations.Dilations` class defining dilations</span>
+<span class="sd">    :param nin: number of input channels</span>
+<span class="sd">    :param nout: number of output channels</span>
+<span class="sd">    :param gpu: (optional) whether to use GPU or CPU</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">dil</span><span class="p">,</span> <span class="n">nin</span><span class="p">,</span> <span class="n">nout</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nin</span> <span class="o">=</span> <span class="n">nin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nout</span> <span class="o">=</span> <span class="n">nout</span>
+        
+        <span class="c1"># Fill dilation list</span>
+        <span class="k">if</span> <span class="n">dil</span><span class="p">:</span>
+            <span class="n">dil</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dil</span><span class="o">.</span><span class="n">nextdil</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">)],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        
+        <span class="c1"># Set up temporary images, force creation in first calls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indelta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fshape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">axesslc</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revf</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span>
+        
+        <span class="k">if</span> <span class="n">gpu</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">gpuoperations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span> <span class="o">=</span> <span class="n">gpuoperations</span><span class="o">.</span><span class="n">GPUImageData</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">ImageData</span>
+        
+        <span class="c1"># Set up filters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fshape</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fg</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">]</span>
+        
+        <span class="c1"># Set up weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nout</span><span class="p">,</span><span class="n">nin</span><span class="o">+</span><span class="n">d</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+        
+        <span class="c1"># Set up offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">og</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nout</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MSDNet.forward"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">returnoutput</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of input channels (</span><span class="si">{}</span><span class="s2">) does not match expected number (</span><span class="si">{}</span><span class="s2">).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">,</span> <span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span><span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nout</span><span class="p">,</span> <span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span><span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">setimages</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaleinput</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">setscalars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">axesslc</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">prepare_forw_conv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">forw_conv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">setscalars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">axesslc</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">combine_all_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaleoutput</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">returnoutput</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="MSDNet.backward"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">inputdelta</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataobject</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">prepare_gradient</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="o">.</span><span class="n">setimages</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaleoutputback</span><span class="p">()</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">:]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">combine_all_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="p">,</span> <span class="n">wt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">relu2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">back_f</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="n">fb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fshape</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+                <span class="n">fb</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">revf</span><span class="p">]</span>
+            <span class="n">back_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">prepare_back_conv</span><span class="p">(</span><span class="n">back_f</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">back_conv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">relu2</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">inputdelta</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">indelta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">indelta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">,</span> <span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indelta</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">do</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">de</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">):</span>
+                <span class="n">fb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fshape</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+                    <span class="n">fb</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">revf</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nout</span><span class="p">):</span>
+                    <span class="n">operations</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">do</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">indelta</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+                    <span class="n">operations</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">de</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">indelta</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fb</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">[</span><span class="n">j</span><span class="p">])</span></div>
+            
+
+    
+<div class="viewcode-block" id="MSDNet.initialize"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize network parameters.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">nout</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span></div>
+    
+<div class="viewcode-block" id="MSDNet.gradient_zero"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.gradient_zero">[docs]</a>    <span class="k">def</span> <span class="nf">gradient_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg</span><span class="p">:</span>
+            <span class="n">fg</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">og</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oog</span><span class="p">[:]</span><span class="o">=</span><span class="mi">0</span></div>
+    
+<div class="viewcode-block" id="MSDNet.gradient"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.gradient">[docs]</a>    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oog</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="o">.</span><span class="n">sumall</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">og</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">sumall</span><span class="p">()</span>
+       
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">weightgradientall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtergradient</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="MSDNet.filtergradient"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.filtergradient">[docs]</a>    <span class="k">def</span> <span class="nf">filtergradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute filter gradient values.&quot;&quot;&quot;</span>
+        <span class="n">fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">filtergradientfull</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">fg</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">idx</span><span class="o">+=</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span></div>
+      
+<div class="viewcode-block" id="MSDNet.getgradients"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.getgradients">[docs]</a>    <span class="k">def</span> <span class="nf">getgradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fgu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">wg</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span><span class="n">fgu</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">og</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">oog</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="MSDNet.updategradients_internal"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.updategradients_internal">[docs]</a>    <span class="k">def</span> <span class="nf">updategradients_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">:</span>
+            <span class="n">fr</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">fr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">oo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">oo</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">oo</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">u</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">idx</span><span class="o">+=</span><span class="mi">1</span></div>
+    
+<div class="viewcode-block" id="MSDNet.setinputscale"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.setinputscale">[docs]</a>    <span class="k">def</span> <span class="nf">setinputscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set input normalization values.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gam_in</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">off_in</span> <span class="o">=</span> <span class="n">offset</span></div>
+    
+<div class="viewcode-block" id="MSDNet.setoutputscale"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.setoutputscale">[docs]</a>    <span class="k">def</span> <span class="nf">setoutputscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set output normalization values.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">off_out</span> <span class="o">=</span> <span class="n">offset</span></div>
+    
+<div class="viewcode-block" id="MSDNet.scaleinput"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.scaleinput">[docs]</a>    <span class="k">def</span> <span class="nf">scaleinput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize input image.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">mult</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gam_in</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ims</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">off_in</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="MSDNet.scaleoutput"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.scaleoutput">[docs]</a>    <span class="k">def</span> <span class="nf">scaleoutput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rescale output image.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nout</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">mult</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">off_out</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="MSDNet.scaleoutputback"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.scaleoutputback">[docs]</a>    <span class="k">def</span> <span class="nf">scaleoutputback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rescale output image during backpropagation.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nout</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deltaout</span><span class="o">.</span><span class="n">mult</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="MSDNet.normalizeinput"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.normalizeinput">[docs]</a>    <span class="k">def</span> <span class="nf">normalizeinput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoints</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize input of network to zero mean and unit variance.</span>
+
+<span class="sd">        :param datapoints: list of datapoints to compute normalization factors with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span>
+        <span class="n">allmeans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">allstds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">datapoints</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">getall</span><span class="p">()</span>
+            <span class="n">means</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">stds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="n">inp</span><span class="p">:</span>
+                <span class="n">mn</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">/</span><span class="n">im</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">std</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">mn</span><span class="p">)</span>
+                <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
+                <span class="n">stds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+            <span class="n">allmeans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+            <span class="n">allstds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stds</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">allmeans</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">allstds</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gam_in</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">off_in</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">mean</span><span class="o">/</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="MSDNet.normalizeoutput"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.normalizeoutput">[docs]</a>    <span class="k">def</span> <span class="nf">normalizeoutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoints</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize output of network to zero mean and unit variance.</span>
+
+<span class="sd">        :param datapoints: list of datapoints to compute normalization factors with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datapoints</span><span class="p">)</span>
+        <span class="n">allmeans</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">allstds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">datapoints</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">getall</span><span class="p">()</span>
+            <span class="n">means</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">stds</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="n">inp</span><span class="p">:</span>
+                <span class="n">mn</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">/</span><span class="n">im</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">std</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">mn</span><span class="p">)</span>
+                <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
+                <span class="n">stds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+            <span class="n">allmeans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+            <span class="n">allstds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stds</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">allmeans</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">allstds</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span> <span class="o">=</span> <span class="p">(</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">off_out</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="MSDNet.to_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;nin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nin</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;nout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nout</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;dl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;oo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;gam_in&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gam_in</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;off_in&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">off_in</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;gam_out&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;off_out&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">off_out</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">dctf</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+            <span class="n">dctf</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{:05d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dctf</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+
+    
+<div class="viewcode-block" id="MSDNet.load_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.load_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dl</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;dl&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oo</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;oo&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gam_in</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;gam_in&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">off_in</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;off_in&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gam_out</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;gam_out&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">off_out</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;off_out&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">dctf</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dctf</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{:05d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="MSDNet.from_dict"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.MSDNet.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dct</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;nin&#39;</span><span class="p">],</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;nout&#39;</span><span class="p">],</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
+        <span class="n">n</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">n</span></div></div>
+    
+<div class="viewcode-block" id="SegmentationMSDNet"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.SegmentationMSDNet">[docs]</a><span class="k">class</span> <span class="nc">SegmentationMSDNet</span><span class="p">(</span><span class="n">MSDNet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main implementation of a Mixed-Scale Dense network for segmentation.</span>
+<span class="sd">    </span>
+<span class="sd">    Same parameters as :class:`MSDNet`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="SegmentationMSDNet.forward"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.SegmentationMSDNet.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">returnoutput</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">returnoutput</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">softmax</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">returnoutput</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="SegmentationMSDNet.normalizeoutput"><a class="viewcode-back" href="../../apiref/msdnet.network.html#msdnet.network.SegmentationMSDNet.normalizeoutput">[docs]</a>    <span class="k">def</span> <span class="nf">normalizeoutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapoints</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

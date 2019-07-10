@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.operations &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msdnet.operations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msdnet.operations</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/msdnet/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of MSDNet, a Python implementation of the</span>
+<span class="c1">#Mixed-Scale Dense Convolutional Neural Network.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;Module implementing network operations on CPU.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span> <span class="k">as</span> <span class="nn">cf</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="n">libpath</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/liboperations.so&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="n">libpath</span><span class="p">)</span>
+
+<span class="n">aslong</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint64</span>
+<span class="n">asuint</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint</span>
+<span class="n">asfloat</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span>
+
+<span class="n">cfloatp</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span><span class="p">)</span>
+<div class="viewcode-block" id="asfloatp"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.asfloatp">[docs]</a><span class="k">def</span> <span class="nf">asfloatp</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">cfloatp</span><span class="p">)</span></div>
+
+<span class="n">cdoublep</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_double</span><span class="p">)</span>
+<div class="viewcode-block" id="asdoublep"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.asdoublep">[docs]</a><span class="k">def</span> <span class="nf">asdoublep</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">cdoublep</span><span class="p">)</span></div>
+
+
+<span class="n">cintp</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_int32</span><span class="p">)</span>
+<div class="viewcode-block" id="asintp"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.asintp">[docs]</a><span class="k">def</span> <span class="nf">asintp</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">cintp</span><span class="p">)</span></div>
+
+<span class="n">lib</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">multsum</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">squaresum</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_longdouble</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">gradientmap2d</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_float</span>
+
+<div class="viewcode-block" id="relu"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.relu">[docs]</a><span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="leakyrelu"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.leakyrelu">[docs]</a><span class="k">def</span> <span class="nf">leakyrelu</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">leakyrelu</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">asfloat</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="sum"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.sum">[docs]</a><span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="std"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.std">[docs]</a><span class="k">def</span> <span class="nf">std</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">mn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloat</span><span class="p">(</span><span class="n">mn</span><span class="p">),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="multsum"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.multsum">[docs]</a><span class="k">def</span> <span class="nf">multsum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">multsum</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="softmax"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.softmax">[docs]</a><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">asuint</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="squaresum"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.squaresum">[docs]</a><span class="k">def</span> <span class="nf">squaresum</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">squaresum</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span><span class="n">aslong</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="relu2"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.relu2">[docs]</a><span class="k">def</span> <span class="nf">relu2</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">relu2</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="leakyrelu2"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.leakyrelu2">[docs]</a><span class="k">def</span> <span class="nf">leakyrelu2</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">leakyrelu2</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">asfloat</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="combine"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.combine">[docs]</a><span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">aslong</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">asfloat</span><span class="p">(</span><span class="n">w</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="conv2d"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.conv2d">[docs]</a><span class="k">def</span> <span class="nf">conv2d</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="n">shx</span> <span class="o">=</span> <span class="n">indexlist</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">shy</span> <span class="o">=</span> <span class="n">indexlist</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asuint</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">asuint</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">asintp</span><span class="p">(</span><span class="n">shx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asintp</span><span class="p">(</span><span class="n">shy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="filtergradient2d"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.filtergradient2d">[docs]</a><span class="k">def</span> <span class="nf">filtergradient2d</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">ux</span><span class="p">,</span> <span class="n">uy</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">gradientmap2d</span><span class="p">(</span><span class="n">asfloatp</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asfloatp</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asuint</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">asuint</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">asintp</span><span class="p">(</span><span class="n">ux</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">asintp</span><span class="p">(</span><span class="n">uy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span></div>
+
+
+<span class="c1"># Utility functions</span>
+<span class="n">idx_list</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="viewcode-block" id="indexlist"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.indexlist">[docs]</a><span class="k">def</span> <span class="nf">indexlist</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">)</span> <span class="ow">in</span> <span class="n">idx_list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">idx_list</span><span class="p">[(</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">)]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">shp</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">d</span><span class="p">,</span><span class="n">shp</span><span class="o">-</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">shp</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">out</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=-</span><span class="mi">1</span>
+    <span class="n">msk</span> <span class="o">=</span> <span class="n">out</span><span class="o">&gt;=</span><span class="n">shp</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">msk</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">shp</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="n">msk</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="n">idx_list</span><span class="p">[(</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">)]</span> <span class="o">=</span> <span class="n">out</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="setthreads"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.setthreads">[docs]</a><span class="k">def</span> <span class="nf">setthreads</span><span class="p">(</span><span class="n">nthrds</span><span class="p">):</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">set_threads</span><span class="p">(</span><span class="n">asuint</span><span class="p">(</span><span class="n">nthrds</span><span class="p">))</span></div>
+
+<span class="c1"># Try to set number of threads to number of physical cores</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">psutil</span>
+    <span class="n">ncpu</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">naff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span><span class="o">.</span><span class="n">cpu_affinity</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">naff</span> <span class="o">&lt;</span> <span class="n">ncpu</span><span class="p">:</span>
+        <span class="n">ncpu</span> <span class="o">=</span> <span class="n">naff</span>
+    <span class="n">setthreads</span><span class="p">(</span><span class="n">ncpu</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># Internal data object for intermediate images</span>
+<div class="viewcode-block" id="ImageData"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData">[docs]</a><span class="k">class</span> <span class="nc">ImageData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object that represents a set of 2D images on CPU.</span>
+<span class="sd">    </span>
+<span class="sd">    :param shape: total shape of all images</span>
+<span class="sd">    :param dl: list of dilations in the network</span>
+<span class="sd">    :param nin: number of input images of network</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">nin</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dl</span> <span class="o">=</span> <span class="n">dl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nin</span> <span class="o">=</span> <span class="n">nin</span>
+    
+<div class="viewcode-block" id="ImageData.setimages"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.setimages">[docs]</a>    <span class="k">def</span> <span class="nf">setimages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ims</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set data to set of images.</span>
+<span class="sd">        </span>
+<span class="sd">        :param ims: set of images</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[:</span><span class="n">ims</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ims</span></div>
+    
+<div class="viewcode-block" id="ImageData.setscalars"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.setscalars">[docs]</a>    <span class="k">def</span> <span class="nf">setscalars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scl</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set each image to a scalar.</span>
+<span class="sd">        </span>
+<span class="sd">        :param scl: scalar values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">:]</span> <span class="o">=</span> <span class="n">scl</span></div>
+    
+<div class="viewcode-block" id="ImageData.fill"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.fill">[docs]</a>    <span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set image data to single scalar value.</span>
+<span class="sd">        </span>
+<span class="sd">        :param val: scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+    
+<div class="viewcode-block" id="ImageData.copy"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return copy of image data.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="ImageData.get"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return image data.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="ImageData.add"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add scalar to single image.</span>
+<span class="sd">        </span>
+<span class="sd">        :param val: scalar to add</span>
+<span class="sd">        :param i: index of image to add value to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span></div>
+    
+<div class="viewcode-block" id="ImageData.mult"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.mult">[docs]</a>    <span class="k">def</span> <span class="nf">mult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiply single image with value.</span>
+<span class="sd">        </span>
+<span class="sd">        :param val: value</span>
+<span class="sd">        :param i: index of image to multiply</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">combine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">val</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ImageData.prepare_forw_conv"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.prepare_forw_conv">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_forw_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare for forward convolutions.</span>
+<span class="sd">        </span>
+<span class="sd">        :param f: convolution filters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forw_f</span> <span class="o">=</span> <span class="n">f</span></div>
+
+<div class="viewcode-block" id="ImageData.forw_conv"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.forw_conv">[docs]</a>    <span class="k">def</span> <span class="nf">forw_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">outidx</span><span class="p">,</span> <span class="n">dl</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform forward convolutions</span>
+<span class="sd">        </span>
+<span class="sd">        :param i: image index to compute</span>
+<span class="sd">        :param outidx: image index to write output to</span>
+<span class="sd">        :param dl: dilation list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forw_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">outidx</span><span class="p">):</span>
+            <span class="n">conv2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">outidx</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">dl</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ImageData.prepare_back_conv"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.prepare_back_conv">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_back_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare for backward convolutions.</span>
+<span class="sd">        </span>
+<span class="sd">        :param f: convolution filters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">back_f</span> <span class="o">=</span> <span class="n">f</span></div>
+
+<div class="viewcode-block" id="ImageData.back_conv"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.back_conv">[docs]</a>    <span class="k">def</span> <span class="nf">back_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outidx</span><span class="p">,</span> <span class="n">dl</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform backward convolutions</span>
+<span class="sd">        </span>
+<span class="sd">        :param outidx: image index to write output to</span>
+<span class="sd">        :param dl: dilation list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">back_f</span><span class="p">[</span><span class="n">outidx</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">outidx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">conv2d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">outidx</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">outidx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span>
+
+<div class="viewcode-block" id="ImageData.relu"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.relu">[docs]</a>    <span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply ReLU to single image.&quot;&quot;&quot;</span>
+        <span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="ImageData.relu2"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.relu2">[docs]</a>    <span class="k">def</span> <span class="nf">relu2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">dat</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply backpropagation ReLU to single image.&quot;&quot;&quot;</span>
+        <span class="n">relu2</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+      
+<div class="viewcode-block" id="ImageData.combine_all_all"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.combine_all_all">[docs]</a>    <span class="k">def</span> <span class="nf">combine_all_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dat</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute linear combinations of images.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">combine</span><span class="p">(</span><span class="n">dat</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="ImageData.prepare_gradient"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.prepare_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare for gradient computation.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uxs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uys</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">q</span><span class="o">*</span><span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uxs</span><span class="p">:</span>
+                    <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                    <span class="n">tmp</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&gt;=</span><span class="n">shp</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">shp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&gt;=</span><span class="n">shp</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">2</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">uxs</span><span class="p">[</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">q</span><span class="o">*</span><span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">uys</span><span class="p">:</span>
+                    <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                    <span class="n">tmp</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">,</span> <span class="n">shp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&gt;=</span><span class="n">shp</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">shp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span><span class="o">&gt;=</span><span class="n">shp</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">2</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">uys</span><span class="p">[</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span></div>
+    
+<div class="viewcode-block" id="ImageData.filtergradientfull"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.filtergradientfull">[docs]</a>    <span class="k">def</span> <span class="nf">filtergradientfull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ims</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute gradients for filters.&quot;&quot;&quot;</span>
+        <span class="n">gs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">)):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nin</span><span class="o">+</span><span class="n">i</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtergradient2d</span><span class="p">(</span><span class="n">ims</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">uxs</span><span class="p">[</span><span class="n">q</span><span class="o">*</span><span class="n">d</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">uys</span><span class="p">[</span><span class="n">r</span><span class="o">*</span><span class="n">d</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ImageData.weightgradientall"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.weightgradientall">[docs]</a>    <span class="k">def</span> <span class="nf">weightgradientall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute gradients for weights.&quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">multsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">delta</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+    
+<div class="viewcode-block" id="ImageData.sumall"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.sumall">[docs]</a>    <span class="k">def</span> <span class="nf">sumall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute image sums.&quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+    
+<div class="viewcode-block" id="ImageData.softmax"><a class="viewcode-back" href="../../apiref/msdnet.operations.html#msdnet.operations.ImageData.softmax">[docs]</a>    <span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute softmax.&quot;&quot;&quot;</span>
+        <span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

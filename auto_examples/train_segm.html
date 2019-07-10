@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example 03: Train a network for segmentation &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 04: Apply trained network for segmentation" href="apply_segm.html" />
+    <link rel="prev" title="Example 02: Apply trained network for regression" href="apply_regr.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Example scripts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="train_regr.html">Example 01: Train a network for regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apply_regr.html">Example 02: Apply trained network for regression</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 03: Train a network for segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apply_segm.html">Example 04: Apply trained network for segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train_regr_tomography.html">Example 05: Train a network for regression (tomography)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apply_regr_tomography.html">Example 06: Apply trained network for regression (tomography)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train_segm_tomography.html">Example 07: Train a network for segmentation (tomography)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apply_segm_tomography.html">Example 08: Apply trained network for segmentation (tomography)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resume_train_segm.html">Example 09: Resume training a network for segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generatedata.html">Supplementary 01: Generate data for examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generatedata_tomography.html">Supplementary 02: Generate data for tomography examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Example scripts</a> &raquo;</li>
+        
+      <li>Example 03: Train a network for segmentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/train_segm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-train-segm-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-03-train-a-network-for-segmentation">
+<span id="sphx-glr-auto-examples-train-segm-py"></span><h1>Example 03: Train a network for segmentation<a class="headerlink" href="#example-03-train-a-network-for-segmentation" title="Permalink to this headline">¶</a></h1>
+<p>This script trains a MS-D network for segmentation (i.e. labeling)
+Run generatedata.py first to generate required training data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
+<span class="kn">import</span> <span class="nn">msdnet</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="c1"># Define dilations in [1,10] as in paper.</span>
+<span class="n">dilations</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">dilations</span><span class="o">.</span><span class="n">IncrementDilations</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Create main network object for segmentation, with 100 layers,</span>
+<span class="c1"># [1,10] dilations, 1 input channel, 5 output channels (one for each label),</span>
+<span class="c1"># using the GPU (set gpu=False to use CPU)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">SegmentationMSDNet</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dilations</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Initialize network parameters</span>
+<span class="n">n</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+<span class="c1"># Define training data</span>
+<span class="c1"># First, create lists of input files (noisy) and target files (labels)</span>
+<span class="n">flsin</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;train/noisy/*.tiff&#39;</span><span class="p">))</span>
+<span class="n">flstg</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;train/label/*.tiff&#39;</span><span class="p">))</span>
+<span class="c1"># Create list of datapoints (i.e. input/target pairs)</span>
+<span class="n">dats</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flsin</span><span class="p">)):</span>
+    <span class="c1"># Create datapoint with file names</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ImageFileDataPoint</span><span class="p">(</span><span class="n">flsin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">flstg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1"># Convert datapoint to one-hot, using labels 0, 1, 2, 3, and 4,</span>
+    <span class="c1"># which are the labels given in each label TIFF file.</span>
+    <span class="n">d_oh</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">OneHotDataPoint</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+    <span class="c1"># Augment data by rotating and flipping</span>
+    <span class="n">d_augm</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">RotateAndFlipDataPoint</span><span class="p">(</span><span class="n">d_oh</span><span class="p">)</span>
+    <span class="c1"># Add augmented datapoint to list</span>
+    <span class="n">dats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_augm</span><span class="p">)</span>
+<span class="c1"># Note: The above can also be achieved using a utility function for such &#39;simple&#39; cases:</span>
+<span class="c1"># dats = msdnet.utils.load_simple_data(&#39;train/noisy/*.tiff&#39;, &#39;train/label/*.tiff&#39;, augment=True, labels=[0,1,2,3,4])</span>
+
+<span class="c1"># Normalize input and output of network to zero mean and unit variance using</span>
+<span class="c1"># training data images</span>
+<span class="n">n</span><span class="o">.</span><span class="n">normalizeinout</span><span class="p">(</span><span class="n">dats</span><span class="p">)</span>
+
+<span class="c1"># Use image batches of a single image</span>
+<span class="n">bprov</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">BatchProvider</span><span class="p">(</span><span class="n">dats</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Define validation data (not using augmentation)</span>
+<span class="n">flsin</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;val/noisy/*.tiff&#39;</span><span class="p">))</span>
+<span class="n">flstg</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;val/label/*.tiff&#39;</span><span class="p">))</span>
+<span class="n">datsv</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flsin</span><span class="p">)):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ImageFileDataPoint</span><span class="p">(</span><span class="n">flsin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">flstg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">d_oh</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">OneHotDataPoint</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">datsv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d_oh</span><span class="p">)</span>
+<span class="c1"># Note: The above can also be achieved using a utility function for such &#39;simple&#39; cases:</span>
+<span class="c1"># datsv = msdnet.utils.load_simple_data(&#39;train/noisy/*.tiff&#39;, &#39;train/label/*.tiff&#39;, augment=False, labels=[0,1,2,3,4])</span>
+
+<span class="c1"># Validate with Mean-Squared Error</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">validate</span><span class="o">.</span><span class="n">MSEValidation</span><span class="p">(</span><span class="n">datsv</span><span class="p">)</span>
+
+<span class="c1"># Use ADAM training algorithms</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamAlgorithm</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Log error metrics to console</span>
+<span class="n">consolelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ConsoleLogger</span><span class="p">()</span>
+<span class="c1"># Log error metrics to file</span>
+<span class="n">filelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">FileLogger</span><span class="p">(</span><span class="s1">&#39;log_segm.txt&#39;</span><span class="p">)</span>
+<span class="c1"># Log typical, worst, and best images to image files</span>
+<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLabelLogger</span><span class="p">(</span><span class="s1">&#39;log_segm&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># Log typical, worst, and best images to image files</span>
+<span class="c1"># Output probability map for a single channel (in this case, channel 3)</span>
+<span class="n">singlechannellog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_segm_singlechannel&#39;</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Train network until program is stopped manually</span>
+<span class="c1"># Network parameters are saved in segm_params.h5</span>
+<span class="c1"># Validation is run after every len(datsv) (=25)</span>
+<span class="c1"># training steps.</span>
+<span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">bprov</span><span class="p">,</span> <span class="s1">&#39;segm_params.h5&#39;</span><span class="p">,</span><span class="n">loggers</span><span class="o">=</span><span class="p">[</span><span class="n">consolelog</span><span class="p">,</span><span class="n">filelog</span><span class="p">,</span><span class="n">imagelog</span><span class="p">,</span><span class="n">singlechannellog</span><span class="p">],</span> <span class="n">val_every</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">datsv</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-train-segm-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/922a50851c746eaa93ed772faba4b21a/train_segm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">train_segm.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/546702788fd8f1b9efae9b9cb6272c10/train_segm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">train_segm.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="apply_segm.html" class="btn btn-neutral float-right" title="Example 04: Apply trained network for segmentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="apply_regr.html" class="btn btn-neutral float-left" title="Example 02: Apply trained network for regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.operations module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.store module" href="msdnet.store.html" />
+    <link rel="prev" title="msdnet.network module" href="msdnet.network.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.operations module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.operations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.operations">
+<span id="msdnet-operations-module"></span><h1>msdnet.operations module<a class="headerlink" href="#module-msdnet.operations" title="Permalink to this headline">¶</a></h1>
+<p>Module implementing network operations on CPU.</p>
+<dl class="attribute">
+<dt id="msdnet.operations.cfloatp">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">cfloatp</code><a class="headerlink" href="#msdnet.operations.cfloatp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.operations.LP_c_float</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.asfloatp">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">asfloatp</code><span class="sig-paren">(</span><em class="sig-param">arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#asfloatp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.asfloatp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="msdnet.operations.cdoublep">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">cdoublep</code><a class="headerlink" href="#msdnet.operations.cdoublep" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.operations.LP_c_double</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.asdoublep">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">asdoublep</code><span class="sig-paren">(</span><em class="sig-param">arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#asdoublep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.asdoublep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="msdnet.operations.cintp">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">cintp</code><a class="headerlink" href="#msdnet.operations.cintp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.operations.LP_c_int</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.asintp">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">asintp</code><span class="sig-paren">(</span><em class="sig-param">arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#asintp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.asintp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.relu">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">relu</code><span class="sig-paren">(</span><em class="sig-param">inp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.relu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.leakyrelu">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">leakyrelu</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#leakyrelu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.leakyrelu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.sum">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param">inp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.sum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.std">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">std</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">mn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.std" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.multsum">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">multsum</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#multsum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.multsum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.softmax">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">softmax</code><span class="sig-paren">(</span><em class="sig-param">inp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.softmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.squaresum">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">squaresum</code><span class="sig-paren">(</span><em class="sig-param">a</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#squaresum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.squaresum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.relu2">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">relu2</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">out</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#relu2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.relu2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.leakyrelu2">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">leakyrelu2</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">out</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#leakyrelu2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.leakyrelu2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.combine">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">combine</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">out</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.combine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.conv2d">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">conv2d</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">out</em>, <em class="sig-param">f</em>, <em class="sig-param">d</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#conv2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.conv2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.filtergradient2d">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">filtergradient2d</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">delta</em>, <em class="sig-param">ux</em>, <em class="sig-param">uy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#filtergradient2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.filtergradient2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.indexlist">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">indexlist</code><span class="sig-paren">(</span><em class="sig-param">d</em>, <em class="sig-param">shp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#indexlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.indexlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.operations.setthreads">
+<code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">setthreads</code><span class="sig-paren">(</span><em class="sig-param">nthrds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#setthreads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.setthreads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="msdnet.operations.ImageData">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.operations.</code><code class="sig-name descname">ImageData</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">dl</em>, <em class="sig-param">nin</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Object that represents a set of 2D images on CPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – total shape of all images</p></li>
+<li><p><strong>dl</strong> – list of dilations in the network</p></li>
+<li><p><strong>nin</strong> – number of input images of network</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.operations.ImageData.setimages">
+<code class="sig-name descname">setimages</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.setimages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.setimages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set data to set of images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ims</strong> – set of images</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.setscalars">
+<code class="sig-name descname">setscalars</code><span class="sig-paren">(</span><em class="sig-param">scl</em>, <em class="sig-param">start=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.setscalars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.setscalars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set each image to a scalar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scl</strong> – scalar values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.fill">
+<code class="sig-name descname">fill</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.fill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set image data to single scalar value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> – scalar value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return copy of image data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add scalar to single image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> – scalar to add</p></li>
+<li><p><strong>i</strong> – index of image to add value to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.mult">
+<code class="sig-name descname">mult</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.mult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.mult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply single image with value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> – value</p></li>
+<li><p><strong>i</strong> – index of image to multiply</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.prepare_forw_conv">
+<code class="sig-name descname">prepare_forw_conv</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.prepare_forw_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.prepare_forw_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for forward convolutions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> – convolution filters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.forw_conv">
+<code class="sig-name descname">forw_conv</code><span class="sig-paren">(</span><em class="sig-param">i</em>, <em class="sig-param">outidx</em>, <em class="sig-param">dl</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.forw_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.forw_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform forward convolutions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – image index to compute</p></li>
+<li><p><strong>outidx</strong> – image index to write output to</p></li>
+<li><p><strong>dl</strong> – dilation list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.prepare_back_conv">
+<code class="sig-name descname">prepare_back_conv</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.prepare_back_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.prepare_back_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for backward convolutions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> – convolution filters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.back_conv">
+<code class="sig-name descname">back_conv</code><span class="sig-paren">(</span><em class="sig-param">outidx</em>, <em class="sig-param">dl</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.back_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.back_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform backward convolutions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outidx</strong> – image index to write output to</p></li>
+<li><p><strong>dl</strong> – dilation list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.shape">
+<em class="property">property </em><code class="sig-name descname">shape</code><a class="headerlink" href="#msdnet.operations.ImageData.shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.relu">
+<code class="sig-name descname">relu</code><span class="sig-paren">(</span><em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply ReLU to single image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.relu2">
+<code class="sig-name descname">relu2</code><span class="sig-paren">(</span><em class="sig-param">i</em>, <em class="sig-param">dat</em>, <em class="sig-param">j</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.relu2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.relu2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply backpropagation ReLU to single image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.combine_all_all">
+<code class="sig-name descname">combine_all_all</code><span class="sig-paren">(</span><em class="sig-param">dat</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.combine_all_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.combine_all_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute linear combinations of images.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.prepare_gradient">
+<code class="sig-name descname">prepare_gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.prepare_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.prepare_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for gradient computation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.filtergradientfull">
+<code class="sig-name descname">filtergradientfull</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.filtergradientfull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.filtergradientfull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradients for filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.weightgradientall">
+<code class="sig-name descname">weightgradientall</code><span class="sig-paren">(</span><em class="sig-param">delta</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.weightgradientall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.weightgradientall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradients for weights.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.sumall">
+<code class="sig-name descname">sumall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.sumall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.sumall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute image sums.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.operations.ImageData.softmax">
+<code class="sig-name descname">softmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/operations.html#ImageData.softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.operations.ImageData.softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute softmax.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.store.html" class="btn btn-neutral float-right" title="msdnet.store module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.network.html" class="btn btn-neutral float-left" title="msdnet.network module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

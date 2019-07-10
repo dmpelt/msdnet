@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.train module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.utils module" href="msdnet.utils.html" />
+    <link rel="prev" title="msdnet.store module" href="msdnet.store.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.train module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.train.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.train">
+<span id="msdnet-train-module"></span><h1>msdnet.train module<a class="headerlink" href="#module-msdnet.train" title="Permalink to this headline">¶</a></h1>
+<p>Module for training networks.</p>
+<dl class="class">
+<dt id="msdnet.train.TrainAlgorithm">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.train.</code><code class="sig-name descname">TrainAlgorithm</code><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class implementing a training algorithm.</p>
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.step">
+<em class="property">abstract </em><code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">dlist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a single algorithm step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to train with</p></li>
+<li><p><strong>dlist</strong> – list of <a class="reference internal" href="msdnet.data.html#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.DataPoint</span></code></a> to train with</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.to_dict">
+<em class="property">abstract </em><code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save algorithm state to dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.load_dict">
+<em class="property">abstract </em><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load algorithm state from dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.from_dict">
+<em class="property">abstract classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load algorithm from dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.from_file">
+<em class="property">classmethod </em><code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load algorithm from file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.TrainAlgorithm.to_file">
+<code class="sig-name descname">to_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#TrainAlgorithm.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.TrainAlgorithm.to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save algorithm state to file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.train.AdamAlgorithm">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.train.</code><code class="sig-name descname">AdamAlgorithm</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">a=0.001</em>, <em class="sig-param">b1=0.9</em>, <em class="sig-param">b2=0.999</em>, <em class="sig-param">e=1e-08</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#AdamAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.AdamAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.train.TrainAlgorithm" title="msdnet.train.TrainAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.train.TrainAlgorithm</span></code></a></p>
+<p>Implementation of the ADAM algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to train with</p></li>
+<li><p><strong>a</strong> – ADAM parameter</p></li>
+<li><p><strong>b1</strong> – ADAM parameter</p></li>
+<li><p><strong>b2</strong> – ADAM parameter</p></li>
+<li><p><strong>e</strong> – ADAM parameter</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.train.AdamAlgorithm.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">dlist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#AdamAlgorithm.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.AdamAlgorithm.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a single algorithm step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to train with</p></li>
+<li><p><strong>dlist</strong> – list of <a class="reference internal" href="msdnet.data.html#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.DataPoint</span></code></a> to train with</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.AdamAlgorithm.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#AdamAlgorithm.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.AdamAlgorithm.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save algorithm state to dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.AdamAlgorithm.load_dict">
+<code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#AdamAlgorithm.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.AdamAlgorithm.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load algorithm state from dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.train.AdamAlgorithm.from_dict">
+<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#AdamAlgorithm.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.AdamAlgorithm.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load algorithm from dictionary</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.train.restore_training">
+<code class="sig-prename descclassname">msdnet.train.</code><code class="sig-name descname">restore_training</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">netclass</em>, <em class="sig-param">trainclass</em>, <em class="sig-param">valclass</em>, <em class="sig-param">valdata</em>, <em class="sig-param">gpu=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#restore_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.restore_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore training from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> – filename to load</p></li>
+<li><p><strong>netclass</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> class to use</p></li>
+<li><p><strong>trainclass</strong> – <a class="reference internal" href="#msdnet.train.TrainAlgorithm" title="msdnet.train.TrainAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainAlgorithm</span></code></a> class to use</p></li>
+<li><p><strong>valclass</strong> – <a class="reference internal" href="msdnet.validate.html#msdnet.validate.Validation" title="msdnet.validate.Validation"><code class="xref py py-class docutils literal notranslate"><span class="pre">validate.Validation</span></code></a> class to use</p></li>
+<li><p><strong>valdata</strong> – list of <a class="reference internal" href="msdnet.data.html#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.DataPoint</span></code></a> to validate with</p></li>
+<li><p><strong>gpu</strong> – (optional) whether to use GPU or CPU</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>network object, training algorithm object, and validation object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.train.train">
+<code class="sig-prename descclassname">msdnet.train.</code><code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">trainalg</em>, <em class="sig-param">validation</em>, <em class="sig-param">dataprov</em>, <em class="sig-param">outputfile</em>, <em class="sig-param">val_every=None</em>, <em class="sig-param">loggers=None</em>, <em class="sig-param">stopcrit=inf</em>, <em class="sig-param">progress=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/train.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.train.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to train with</p></li>
+<li><p><strong>trainalg</strong> – <a class="reference internal" href="#msdnet.train.TrainAlgorithm" title="msdnet.train.TrainAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainAlgorithm</span></code></a> object that performs training.</p></li>
+<li><p><strong>validation</strong> – <a class="reference internal" href="msdnet.validate.html#msdnet.validate.Validation" title="msdnet.validate.Validation"><code class="xref py py-class docutils literal notranslate"><span class="pre">validate.Validation</span></code></a> object that performs validation.</p></li>
+<li><p><strong>dataprov</strong> – <a class="reference internal" href="msdnet.data.html#msdnet.data.BatchProvider" title="msdnet.data.BatchProvider"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.BatchProvider</span></code></a> object that generates training batches.</p></li>
+<li><p><strong>outputfile</strong> – file to store trained network parameters in</p></li>
+<li><p><strong>val_every</strong> – (optional) number of training steps before each validation step</p></li>
+<li><p><strong>loggers</strong> – (optional) list of <code class="xref py py-class docutils literal notranslate"><span class="pre">loggers.Logger</span></code> objects to perform logging.</p></li>
+<li><p><strong>stopcric</strong> – (optional) number of validations steps without improvement before stopping training</p></li>
+<li><p><strong>progress</strong> – (optional) whether to show progress during training</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.utils.html" class="btn btn-neutral float-right" title="msdnet.utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.store.html" class="btn btn-neutral float-left" title="msdnet.store module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.validate module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="msdnet.utils module" href="msdnet.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.validate module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.validate.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.validate">
+<span id="msdnet-validate-module"></span><h1>msdnet.validate module<a class="headerlink" href="#module-msdnet.validate" title="Permalink to this headline">¶</a></h1>
+<p>Module for defining and processing validation sets.</p>
+<dl class="class">
+<dt id="msdnet.validate.Validation">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.validate.</code><code class="sig-name descname">Validation</code><a class="reference internal" href="../_modules/msdnet/validate.html#Validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class for processing a validation set.</p>
+<dl class="method">
+<dt id="msdnet.validate.Validation.validate">
+<em class="property">abstract </em><code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute validation metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to validate with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if validation metric is lower than best validation error encountered, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.Validation.to_dict">
+<em class="property">abstract </em><code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute validation metrics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.Validation.load_dict">
+<em class="property">abstract </em><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing all network variables and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.Validation.from_dict">
+<em class="property">abstract classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Validation object from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – dictionary with all parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.Validation.from_file">
+<em class="property">classmethod </em><code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Validation object from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – filename</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.Validation.to_file">
+<code class="sig-name descname">to_file</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#Validation.to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.Validation.to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save all Validation object parameters to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – filename</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.validate.MetricValidation">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.validate.</code><code class="sig-name descname">MetricValidation</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">keep=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.validate.Validation" title="msdnet.validate.Validation"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.validate.Validation</span></code></a></p>
+<p>Validation object that computes simple difference metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – list of <a class="reference internal" href="msdnet.data.html#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.DataPoint</span></code></a> objects to validate with.</p></li>
+<li><p><strong>keep</strong> – (optional) whether to keep the best, worst, and typical result in memory.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.errorfunc">
+<code class="sig-name descname">errorfunc</code><span class="sig-paren">(</span><em class="sig-param">output</em>, <em class="sig-param">target</em>, <em class="sig-param">msk</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.errorfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.errorfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error function used for validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> – network output image.</p></li>
+<li><p><strong>target</strong> – target image.</p></li>
+<li><p><strong>mask</strong> – mask image to indicate where to compute error function for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>error function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.getbest">
+<code class="sig-name descname">getbest</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.getbest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.getbest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the input, target, and network output for best result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of images (input, target, network output)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.getworst">
+<code class="sig-name descname">getworst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.getworst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.getworst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the input, target, and network output for worst result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of images (input, target, network output)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.getmedian">
+<code class="sig-name descname">getmedian</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.getmedian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.getmedian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the input, target, and network output for median result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of images (input, target, network output)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute validation metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a> to validate with</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if validation metric is lower than best validation error encountered, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute validation metrics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.load_dict">
+<code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing all network variables and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>all network variables and parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.validate.MetricValidation.from_dict">
+<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">dct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MetricValidation.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MetricValidation.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Validation object from dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dct</strong> – dictionary with all parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.validate.MSEValidation">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.validate.</code><code class="sig-name descname">MSEValidation</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">keep=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MSEValidation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MSEValidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.validate.MetricValidation" title="msdnet.validate.MetricValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.validate.MetricValidation</span></code></a></p>
+<p>Validation object that uses mean-squared error</p>
+<dl class="method">
+<dt id="msdnet.validate.MSEValidation.errorfunc">
+<code class="sig-name descname">errorfunc</code><span class="sig-paren">(</span><em class="sig-param">output</em>, <em class="sig-param">target</em>, <em class="sig-param">msk</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/validate.html#MSEValidation.errorfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.validate.MSEValidation.errorfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error function used for validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> – network output image.</p></li>
+<li><p><strong>target</strong> – target image.</p></li>
+<li><p><strong>mask</strong> – mask image to indicate where to compute error function for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>error function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="msdnet.utils.html" class="btn btn-neutral float-left" title="msdnet.utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

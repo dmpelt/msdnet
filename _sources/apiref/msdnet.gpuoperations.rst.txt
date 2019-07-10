@@ -1,0 +1,7 @@
+msdnet.gpuoperations module
+===========================
+
+.. automodule:: msdnet.gpuoperations
+   :members:
+   :undoc-members:
+   :show-inheritance:

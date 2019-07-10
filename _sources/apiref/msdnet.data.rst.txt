@@ -1,0 +1,7 @@
+msdnet.data module
+==================
+
+.. automodule:: msdnet.data
+   :members:
+   :undoc-members:
+   :show-inheritance:

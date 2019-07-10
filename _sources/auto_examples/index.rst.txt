@@ -1,0 +1,253 @@
+:orphan:
+
+Example scripts
+===============
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script trains a MS-D network for regression (i.e. denoising/artifact removal) Run generate...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_train_regr_thumb.png
+
+        :ref:`sphx_glr_auto_examples_train_regr.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/train_regr
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script applies a trained MS-D network for regression (i.e. denoising/artifact removal) Run...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_apply_regr_thumb.png
+
+        :ref:`sphx_glr_auto_examples_apply_regr.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/apply_regr
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script trains a MS-D network for segmentation (i.e. labeling) Run generatedata.py first to...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_train_segm_thumb.png
+
+        :ref:`sphx_glr_auto_examples_train_segm.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/train_segm
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script applies a trained MS-D network for segmentation (i.e. labeling) Run generatedata.py...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_apply_segm_thumb.png
+
+        :ref:`sphx_glr_auto_examples_apply_segm.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/apply_segm
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script trains a MS-D network for regression (i.e. denoising/artifact removal) Run generate...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_train_regr_tomography_thumb.png
+
+        :ref:`sphx_glr_auto_examples_train_regr_tomography.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/train_regr_tomography
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script applies a trained MS-D network for regression (i.e. denoising/artifact removal) Run...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_apply_regr_tomography_thumb.png
+
+        :ref:`sphx_glr_auto_examples_apply_regr_tomography.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/apply_regr_tomography
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script trains a MS-D network for segmentation (i.e. labeling) Run generatedata.py first to...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_train_segm_tomography_thumb.png
+
+        :ref:`sphx_glr_auto_examples_train_segm_tomography.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/train_segm_tomography
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script applies a trained MS-D network for segmentation (i.e. labeling) Run generatedata_to...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_apply_segm_tomography_thumb.png
+
+        :ref:`sphx_glr_auto_examples_apply_segm_tomography.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/apply_segm_tomography
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script resumes an earlier training of a MS-D network for  segmentation (i.e. labeling) Run...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_resume_train_segm_thumb.png
+
+        :ref:`sphx_glr_auto_examples_resume_train_segm.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/resume_train_segm
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script generates 100 training images, 25 validation images, and 10 testing images to train...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_generatedata_thumb.png
+
+        :ref:`sphx_glr_auto_examples_generatedata.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/generatedata
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip=" This script generates tomographic reconstructions of phantom samples: 1 sample for training, 1...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_generatedata_tomography_thumb.png
+
+        :ref:`sphx_glr_auto_examples_generatedata_tomography.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/generatedata_tomography
+.. raw:: html
+
+    <div style='clear:both'></div>
+
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-gallery
+
+
+  .. container:: sphx-glr-download
+
+    :download:`Download all examples in Python source code: auto_examples_python.zip <//ufs/daniel/projects/msdnet/docs/auto_examples/auto_examples_python.zip>`
+
+
+
+  .. container:: sphx-glr-download
+
+    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//ufs/daniel/projects/msdnet/docs/auto_examples/auto_examples_jupyter.zip>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

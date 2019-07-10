@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.loggers module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.network module" href="msdnet.network.html" />
+    <link rel="prev" title="msdnet.gpuoperations module" href="msdnet.gpuoperations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.loggers module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.loggers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.loggers">
+<span id="msdnet-loggers-module"></span><h1>msdnet.loggers module<a class="headerlink" href="#module-msdnet.loggers" title="Permalink to this headline">¶</a></h1>
+<p>Module for logging progress during training.</p>
+<dl class="class">
+<dt id="msdnet.loggers.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">Logger</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">onlyifbetter=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base logger class</p>
+<p>Logs progress of validation set during training.</p>
+<dl class="method">
+<dt id="msdnet.loggers.Logger.makelog">
+<em class="property">abstract </em><code class="sig-name descname">makelog</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#Logger.makelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.Logger.makelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set. To be implemented by each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.Logger.initialize">
+<em class="property">abstract </em><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#Logger.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.Logger.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.Logger.log">
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#Logger.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.Logger.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.loggers.ConsoleLogger">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">ConsoleLogger</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">onlyifbetter=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ConsoleLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ConsoleLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.loggers.Logger" title="msdnet.loggers.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.loggers.Logger</span></code></a></p>
+<p>Output error values to the console.</p>
+<dl class="method">
+<dt id="msdnet.loggers.ConsoleLogger.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ConsoleLogger.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ConsoleLogger.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.ConsoleLogger.makelog">
+<code class="sig-name descname">makelog</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ConsoleLogger.makelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ConsoleLogger.makelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set. To be implemented by each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.loggers.FileLogger">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">FileLogger</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">onlyifbetter=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#FileLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.FileLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.loggers.Logger" title="msdnet.loggers.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.loggers.Logger</span></code></a></p>
+<p>Output error values to a file.</p>
+<dl class="method">
+<dt id="msdnet.loggers.FileLogger.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#FileLogger.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.FileLogger.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> – Filename to log error values to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.FileLogger.makelog">
+<code class="sig-name descname">makelog</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#FileLogger.makelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.FileLogger.makelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set. To be implemented by each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.loggers.getheaderimage">
+<code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">getheaderimage</code><span class="sig-paren">(</span><em class="sig-param">width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#getheaderimage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.getheaderimage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>width</strong> – width of image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.loggers.stitchimages">
+<code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">stitchimages</code><span class="sig-paren">(</span><em class="sig-param">ims</em>, <em class="sig-param">imsize=None</em>, <em class="sig-param">scaleoutput=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#stitchimages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.stitchimages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stitch three images (input, target, output).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ims</strong> – list of images to stitch</p></li>
+<li><p><strong>imsize</strong> – (optional) Maximum size of image</p></li>
+<li><p><strong>scaleoutput</strong> – (optional) whether to scale output image to target image range</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.loggers.ImageLogger">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">ImageLogger</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">onlyifbetter=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.loggers.Logger" title="msdnet.loggers.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.loggers.Logger</span></code></a></p>
+<p>Output best, worst, and typical images for validation set.</p>
+<dl class="method">
+<dt id="msdnet.loggers.ImageLogger.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">chan_in=0</em>, <em class="sig-param">chan_out=0</em>, <em class="sig-param">imsize=512</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLogger.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLogger.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> – base filename to output images to.</p></li>
+<li><p><strong>chan_in</strong> – input channel to show</p></li>
+<li><p><strong>chan_out</strong> – output channel to show</p></li>
+<li><p><strong>imsize</strong> – maximum image size to output</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.ImageLogger.toimage">
+<code class="sig-name descname">toimage</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLogger.toimage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLogger.toimage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.ImageLogger.makelog">
+<code class="sig-name descname">makelog</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLogger.makelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLogger.makelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set. To be implemented by each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.loggers.ImageLabelLogger">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.loggers.</code><code class="sig-name descname">ImageLabelLogger</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">onlyifbetter=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLabelLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLabelLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.loggers.Logger" title="msdnet.loggers.Logger"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.loggers.Logger</span></code></a></p>
+<p>Output best, worst, and typical images for validation set for segmentation problems.</p>
+<dl class="method">
+<dt id="msdnet.loggers.ImageLabelLogger.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">chan_in=0</em>, <em class="sig-param">imsize=512</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLabelLogger.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLabelLogger.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> – base filename to output images to.</p></li>
+<li><p><strong>chan_in</strong> – input channel to show</p></li>
+<li><p><strong>imsize</strong> – maximum image size to output</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.ImageLabelLogger.toimage">
+<code class="sig-name descname">toimage</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLabelLogger.toimage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLabelLogger.toimage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="msdnet.loggers.ImageLabelLogger.makelog">
+<code class="sig-name descname">makelog</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/loggers.html#ImageLabelLogger.makelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.loggers.ImageLabelLogger.makelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs progress of validation set. To be implemented by each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.network.html" class="btn btn-neutral float-right" title="msdnet.network module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.gpuoperations.html" class="btn btn-neutral float-left" title="msdnet.gpuoperations module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

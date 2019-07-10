@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.train &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msdnet.train</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msdnet.train</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/msdnet/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of MSDNet, a Python implementation of the</span>
+<span class="c1">#Mixed-Scale Dense Convolutional Neural Network.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;Module for training networks.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">store</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+
+<div class="viewcode-block" id="TrainAlgorithm"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm">[docs]</a><span class="k">class</span> <span class="nc">TrainAlgorithm</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class implementing a training algorithm.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TrainAlgorithm.step"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.step">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dlist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take a single algorithm step.</span>
+<span class="sd">        </span>
+<span class="sd">        :param n: :class:`.network.Network` to train with</span>
+<span class="sd">        :param dlist: list of :class:`.data.DataPoint` to train with</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="TrainAlgorithm.to_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.to_dict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save algorithm state to dictionary&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="TrainAlgorithm.load_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.load_dict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load algorithm state from dictionary&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="TrainAlgorithm.from_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load algorithm from dictionary&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="TrainAlgorithm.from_file"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load algorithm from file&quot;&quot;&quot;</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get_dict</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;trainalgorithm&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="TrainAlgorithm.to_file"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.TrainAlgorithm.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save algorithm state to file&quot;&quot;&quot;</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">store_dict</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;trainalgorithm&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div></div>
+
+<div class="viewcode-block" id="AdamAlgorithm"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.AdamAlgorithm">[docs]</a><span class="k">class</span> <span class="nc">AdamAlgorithm</span><span class="p">(</span><span class="n">TrainAlgorithm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of the ADAM algorithm.</span>
+<span class="sd">    </span>
+<span class="sd">    :param network: :class:`.network.Network` to train with</span>
+<span class="sd">    :param a: ADAM parameter</span>
+<span class="sd">    :param b1: ADAM parameter</span>
+<span class="sd">    :param b2: ADAM parameter</span>
+<span class="sd">    :param e: ADAM parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">network</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="mf">0.999</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">8</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1t</span> <span class="o">=</span> <span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span> <span class="n">b2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2t</span> <span class="o">=</span> <span class="n">b2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="k">if</span> <span class="n">network</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">npars</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">getgradients</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npars</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npars</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="AdamAlgorithm.step"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.AdamAlgorithm.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dlist</span><span class="p">):</span>
+        <span class="n">n</span><span class="o">.</span><span class="n">gradient_zero</span><span class="p">()</span>
+        <span class="n">tpix</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dlist</span><span class="p">:</span>
+            <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">,</span> <span class="n">msk</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">getall</span><span class="p">()</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">tar</span> <span class="o">-</span> <span class="n">out</span>
+            <span class="k">if</span> <span class="n">msk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">tpix</span> <span class="o">+=</span> <span class="n">err</span><span class="o">.</span><span class="n">size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msk</span> <span class="o">=</span> <span class="p">(</span><span class="n">msk</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">err</span><span class="p">[:,</span> <span class="n">msk</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">tpix</span> <span class="o">+=</span> <span class="n">err</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">err</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">msk</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">gradient</span><span class="p">()</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">getgradients</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">/=</span><span class="n">tpix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span><span class="o">*</span><span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">g</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">mhat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">b1t</span><span class="p">)</span>
+        <span class="n">vhat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">b2t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1t</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2t</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span>
+        <span class="n">upd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">mhat</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vhat</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">n</span><span class="o">.</span><span class="n">updategradients</span><span class="p">(</span><span class="n">upd</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AdamAlgorithm.to_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.AdamAlgorithm.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b1t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1t</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b2t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2t</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;npars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">npars</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+    
+<div class="viewcode-block" id="AdamAlgorithm.load_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.AdamAlgorithm.load_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1t</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b1t&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2t</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;b2t&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npars</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;npars&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="AdamAlgorithm.from_dict"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.AdamAlgorithm.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">load_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div></div>
+
+<div class="viewcode-block" id="restore_training"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.restore_training">[docs]</a><span class="k">def</span> <span class="nf">restore_training</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">netclass</span><span class="p">,</span> <span class="n">trainclass</span><span class="p">,</span> <span class="n">valclass</span><span class="p">,</span> <span class="n">valdata</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Restore training from file.</span>
+
+<span class="sd">    :param fn: filename to load</span>
+<span class="sd">    :param netclass: :class:`.network.Network` class to use</span>
+<span class="sd">    :param trainclass: :class:`TrainAlgorithm` class to use</span>
+<span class="sd">    :param valclass: :class:`.validate.Validation` class to use</span>
+<span class="sd">    :param valdata: list of :class:`.data.DataPoint` to validate with</span>
+<span class="sd">    :param gpu: (optional) whether to use GPU or CPU</span>
+<span class="sd">    :return: network object, training algorithm object, and validation object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">netclass</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">groupname</span><span class="o">=</span><span class="s1">&#39;checkpoint&#39;</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">trainclass</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">valclass</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="n">v</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">valdata</span>
+    <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../apiref/msdnet.train.html#msdnet.train.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">trainalg</span><span class="p">,</span> <span class="n">validation</span><span class="p">,</span> <span class="n">dataprov</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">val_every</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loggers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stopcrit</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">Inf</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Train network.</span>
+
+<span class="sd">    :param network: :class:`.network.Network` to train with   </span>
+<span class="sd">    :param trainalg: :class:`TrainAlgorithm` object that performs training.</span>
+<span class="sd">    :param validation: :class:`.validate.Validation` object that performs validation.</span>
+<span class="sd">    :param dataprov: :class:`.data.BatchProvider` object that generates training batches.</span>
+<span class="sd">    :param outputfile: file to store trained network parameters in</span>
+<span class="sd">    :param val_every: (optional) number of training steps before each validation step</span>
+<span class="sd">    :param loggers: (optional) list of :class:`loggers.Logger` objects to perform logging.</span>
+<span class="sd">    :param stopcric: (optional) number of validations steps without improvement before stopping training</span>
+<span class="sd">    :param progress: (optional) whether to show progress during training</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">val_every</span><span class="p">:</span>
+        <span class="n">val_every</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">validation</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+    
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">outputfile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">checkpointfile</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.checkpoint&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">checkpointfile</span> <span class="o">=</span> <span class="n">outputfile</span> <span class="o">+</span> <span class="s1">&#39;.checkpoint&#39;</span>
+    <span class="n">nworse</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nstep</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">val_every</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">trainalg</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">dataprov</span><span class="o">.</span><span class="n">getbatch</span><span class="p">())</span>
+        <span class="n">nstep</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nstep</span><span class="o">&gt;=</span><span class="n">val_every</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                <span class="n">pbar</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">nstep</span><span class="o">=</span><span class="mi">0</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">checkpointfile</span><span class="p">,</span> <span class="n">groupname</span><span class="o">=</span><span class="s1">&#39;checkpoint&#39;</span><span class="p">)</span>
+            <span class="n">trainalg</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">checkpointfile</span><span class="p">)</span>
+            <span class="n">validation</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">checkpointfile</span><span class="p">)</span>    
+            <span class="k">if</span> <span class="n">validation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+                <span class="n">network</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">outputfile</span><span class="p">)</span>
+                <span class="n">nworse</span><span class="o">=</span><span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nworse</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="n">nworse</span><span class="o">&gt;=</span><span class="n">stopcrit</span><span class="p">:</span>
+                    <span class="k">return</span>
+            <span class="k">if</span> <span class="n">loggers</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">loggers</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">validation</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="n">loggers</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">validation</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">val_every</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+msdnet.network module
+=====================
+
+.. automodule:: msdnet.network
+   :members:
+   :undoc-members:
+   :show-inheritance:

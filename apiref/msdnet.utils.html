@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.utils module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.validate module" href="msdnet.validate.html" />
+    <link rel="prev" title="msdnet.train module" href="msdnet.train.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.utils module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.utils">
+<span id="msdnet-utils-module"></span><h1>msdnet.utils module<a class="headerlink" href="#module-msdnet.utils" title="Permalink to this headline">¶</a></h1>
+<p>Module with miscellaneous utility functions.</p>
+<dl class="function">
+<dt id="msdnet.utils.augment_and_average_prediction">
+<code class="sig-prename descclassname">msdnet.utils.</code><code class="sig-name descname">augment_and_average_prediction</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">inp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/utils.html#augment_and_average_prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.utils.augment_and_average_prediction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Augment input by rotating and flipping, and
+average network output to improve results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – MS-D network <a class="reference internal" href="msdnet.network.html#msdnet.network.Network" title="msdnet.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">network.Network</span></code></a>.</p></li>
+<li><p><strong>inp</strong> – input array (size: <img class="math" src="../_images/math/21f7d1ff74516dd10e5102c3f68f5acc67b26f08.png" alt="N_{c} \times N_{x} \times N_{y}"/>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>averaged output array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.utils.load_simple_data">
+<code class="sig-prename descclassname">msdnet.utils.</code><code class="sig-name descname">load_simple_data</code><span class="sig-paren">(</span><em class="sig-param">input_files</em>, <em class="sig-param">target_files</em>, <em class="sig-param">augment=False</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">maskunlabeled=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/utils.html#load_simple_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.utils.load_simple_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load DataPoints in a simple format: a set of input file names and matching
+target file names (both specified by wildcards). The input file names and target
+file names should ‘sort’ the same.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_files</strong> – string with path specification of input files (e.g. “input/<a href="#id1"><span class="problematic" id="id2">*</span></a>.tiff”)</p></li>
+<li><p><strong>target_files</strong> – string with path specification of input files (e.g. “target/<a href="#id3"><span class="problematic" id="id4">*</span></a>.tiff”)</p></li>
+<li><p><strong>augment</strong> – (optional) whether to augment images by rotating and flipping.</p></li>
+<li><p><strong>labels</strong> – (optional) list of numerical labels in label image. If specified, returned
+DataPoints are converted to one-hot encoded DataPoints for segmentation.</p></li>
+<li><p><strong>maskunlabeled</strong> – (optional) whether to mask out unlabeled pixels if labels is specified</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="msdnet.data.html#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">data.DataPoint</span></code></a> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.validate.html" class="btn btn-neutral float-right" title="msdnet.validate module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.train.html" class="btn btn-neutral float-left" title="msdnet.train module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

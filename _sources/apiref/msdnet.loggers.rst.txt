@@ -1,0 +1,7 @@
+msdnet.loggers module
+=====================
+
+.. automodule:: msdnet.loggers
+   :members:
+   :undoc-members:
+   :show-inheritance:

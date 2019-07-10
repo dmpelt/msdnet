@@ -1,0 +1,7 @@
+msdnet.dilations module
+=======================
+
+.. automodule:: msdnet.dilations
+   :members:
+   :undoc-members:
+   :show-inheritance:

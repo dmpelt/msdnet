@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.loggers &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msdnet.loggers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msdnet.loggers</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/msdnet/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of MSDNet, a Python implementation of the</span>
+<span class="c1">#Mixed-Scale Dense Convolutional Neural Network.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;Module for logging progress during training.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">skimage.transform</span> <span class="k">as</span> <span class="nn">skt</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Base logger class</span>
+<span class="sd">    </span>
+<span class="sd">    Logs progress of validation set during training.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onlyifbetter</span> <span class="o">=</span> <span class="n">onlyifbetter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Logger.makelog"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.Logger.makelog">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">makelog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Logs progress of validation set. To be implemented by each class.</span>
+
+<span class="sd">        :param v: validation set</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Logger.initialize"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.Logger.initialize">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Initialize logger.&#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Logger.log"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.Logger.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Logs progress of validation set.</span>
+
+<span class="sd">        :param v: validation set</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onlyifbetter</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">best</span> <span class="o">!=</span> <span class="n">v</span><span class="o">.</span><span class="n">curerr</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">makelog</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ConsoleLogger"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ConsoleLogger">[docs]</a><span class="k">class</span> <span class="nc">ConsoleLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Output error values to the console.&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="ConsoleLogger.initialize"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ConsoleLogger.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConsoleLogger.makelog"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ConsoleLogger.makelog">[docs]</a>    <span class="k">def</span> <span class="nf">makelog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current error: &#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">curerr</span><span class="p">,</span> <span class="s1">&#39;, Best error: &#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">best</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="FileLogger"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.FileLogger">[docs]</a><span class="k">class</span> <span class="nc">FileLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Output error values to a file.&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="FileLogger.initialize"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.FileLogger.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Initialize logger.</span>
+<span class="sd">        </span>
+<span class="sd">        :param fn: Filename to log error values to.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="FileLogger.makelog"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.FileLogger.makelog">[docs]</a>    <span class="k">def</span> <span class="nf">makelog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Current error: </span><span class="si">{}</span><span class="s1">, Best error: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">curerr</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">best</span><span class="p">))</span></div></div>
+
+<span class="n">header_image</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">header_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="viewcode-block" id="getheaderimage"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.getheaderimage">[docs]</a><span class="k">def</span> <span class="nf">getheaderimage</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return image header.</span>
+<span class="sd">    </span>
+<span class="sd">    :param width: width of image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">header_image</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="ow">in</span> <span class="n">header_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">header_dict</span><span class="p">[</span><span class="n">width</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">header_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">header_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;image_logger_header.png&#39;</span><span class="p">)</span>
+        <span class="n">header_image</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">header_filename</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span>
+        <span class="n">header_dict</span><span class="p">[</span><span class="n">header_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">header_image</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="o">==</span> <span class="n">header_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">header_image</span>
+    <span class="n">res_image</span> <span class="o">=</span> <span class="n">skt</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="n">header_image</span><span class="p">,</span> <span class="n">width</span><span class="o">/</span><span class="mi">1536</span><span class="p">,</span> <span class="n">preserve_range</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">multichannel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">header_dict</span><span class="p">[</span><span class="n">width</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_image</span>
+    <span class="k">return</span> <span class="n">res_image</span></div>
+    
+    
+
+<div class="viewcode-block" id="stitchimages"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.stitchimages">[docs]</a><span class="k">def</span> <span class="nf">stitchimages</span><span class="p">(</span><span class="n">ims</span><span class="p">,</span> <span class="n">imsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scaleoutput</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stitch three images (input, target, output).</span>
+<span class="sd">    </span>
+<span class="sd">    :param ims: list of images to stitch</span>
+<span class="sd">    :param imsize: (optional) Maximum size of image</span>
+<span class="sd">    :param scaleoutput: (optional) whether to scale output image to target image range</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">imsize</span><span class="p">:</span>
+        <span class="n">sz</span> <span class="o">=</span> <span class="n">ims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">fc</span> <span class="o">=</span> <span class="n">imsize</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">sz</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fc</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">osz</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fc</span><span class="o">*</span><span class="n">sz</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fc</span><span class="o">*</span><span class="n">sz</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">sims</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">skt</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">ims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">osz</span><span class="p">,</span><span class="n">preserve_range</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">sims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">skt</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">ims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">osz</span><span class="p">,</span><span class="n">preserve_range</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">sims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">skt</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">ims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">osz</span><span class="p">,</span><span class="n">preserve_range</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">anti_aliasing</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">ims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">ims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">ims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">ims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
+    <span class="n">mn</span> <span class="o">=</span> <span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">mx</span> <span class="o">=</span> <span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mn</span>
+    <span class="k">if</span> <span class="n">mx</span><span class="o">&gt;</span><span class="n">mn</span><span class="p">:</span>
+        <span class="n">sims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/=</span><span class="p">(</span><span class="n">mx</span><span class="o">-</span><span class="n">mn</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scaleoutput</span><span class="p">:</span>
+        <span class="n">mn</span> <span class="o">=</span> <span class="n">sims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">mx</span> <span class="o">=</span> <span class="n">sims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">sims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mn</span>
+        <span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mn</span>
+        <span class="k">if</span> <span class="n">mx</span><span class="o">&gt;</span><span class="n">mn</span><span class="p">:</span>
+            <span class="n">sims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/=</span><span class="p">(</span><span class="n">mx</span><span class="o">-</span><span class="n">mn</span><span class="p">)</span>
+            <span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/=</span><span class="p">(</span><span class="n">mx</span><span class="o">-</span><span class="n">mn</span><span class="p">)</span>
+            <span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+            <span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">sims</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">allims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">sims</span><span class="p">)</span>
+    <span class="n">head_im</span> <span class="o">=</span> <span class="n">getheaderimage</span><span class="p">(</span><span class="n">allims</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">allims</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">head_im</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="n">head_im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">head_im</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">head_im</span><span class="p">,</span><span class="n">allims</span><span class="p">))</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageLogger"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLogger">[docs]</a><span class="k">class</span> <span class="nc">ImageLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Output best, worst, and typical images for validation set.&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="ImageLogger.initialize"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLogger.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">chan_in</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">imsize</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize logger.</span>
+
+<span class="sd">        :param fn: base filename to output images to.</span>
+<span class="sd">        :param chan_in: input channel to show</span>
+<span class="sd">        :param chan_out: output channel to show</span>
+<span class="sd">        :param imsize: maximum image size to output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ci</span> <span class="o">=</span> <span class="n">chan_in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">chan_out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imsize</span> <span class="o">=</span> <span class="n">imsize</span>
+        <span class="k">for</span> <span class="n">tpe</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;worst&#39;</span><span class="p">,</span> <span class="s1">&#39;typical&#39;</span><span class="p">]:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">tpe</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="ImageLogger.toimage"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLogger.toimage">[docs]</a>    <span class="k">def</span> <span class="nf">toimage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ims</span><span class="p">):</span>
+        <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">ims</span>
+        <span class="k">return</span> <span class="n">stitchimages</span><span class="p">([</span><span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">],</span> <span class="n">tar</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">co</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">co</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">imsize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageLogger.makelog"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLogger.makelog">[docs]</a>    <span class="k">def</span> <span class="nf">makelog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_best.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getbest</span><span class="p">()))</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_worst.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getworst</span><span class="p">()))</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_typical.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getmedian</span><span class="p">()))</span></div></div>
+
+<div class="viewcode-block" id="ImageLabelLogger"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLabelLogger">[docs]</a><span class="k">class</span> <span class="nc">ImageLabelLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Output best, worst, and typical images for validation set for segmentation problems.&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="ImageLabelLogger.initialize"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLabelLogger.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">chan_in</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">imsize</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize logger.</span>
+
+<span class="sd">        :param fn: base filename to output images to.</span>
+<span class="sd">        :param chan_in: input channel to show</span>
+<span class="sd">        :param imsize: maximum image size to output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ci</span> <span class="o">=</span> <span class="n">chan_in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imsize</span> <span class="o">=</span> <span class="n">imsize</span>
+        <span class="k">for</span> <span class="n">tpe</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;worst&#39;</span><span class="p">,</span> <span class="s1">&#39;typical&#39;</span><span class="p">]:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">tpe</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">31</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">180</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">51</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">44</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">227</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">28</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">255</span><span class="p">,</span><span class="mi">127</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">106</span><span class="p">,</span><span class="mi">61</span><span class="p">,</span><span class="mi">154</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">153</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">177</span><span class="p">,</span><span class="mi">89</span><span class="p">,</span><span class="mi">40</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">166</span><span class="p">,</span><span class="mi">206</span><span class="p">,</span><span class="mi">227</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">178</span><span class="p">,</span><span class="mi">223</span><span class="p">,</span><span class="mi">138</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">251</span><span class="p">,</span><span class="mi">154</span><span class="p">,</span><span class="mi">153</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">253</span><span class="p">,</span><span class="mi">191</span><span class="p">,</span><span class="mi">111</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">202</span><span class="p">,</span><span class="mi">178</span><span class="p">,</span><span class="mi">214</span><span class="p">]</span>
+        <span class="p">]</span></div>
+     
+<div class="viewcode-block" id="ImageLabelLogger.toimage"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLabelLogger.toimage">[docs]</a>    <span class="k">def</span> <span class="nf">toimage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ims</span><span class="p">):</span>
+        <span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">ims</span>
+        <span class="n">tar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tar</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="n">tar</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">om</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tm</span><span class="o">&gt;=</span><span class="mi">13</span> <span class="ow">or</span> <span class="n">om</span><span class="o">&gt;=</span><span class="mi">13</span><span class="p">:</span>
+            <span class="n">tar</span> <span class="o">=</span> <span class="n">tar</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">inp</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">stitchimages</span><span class="p">([</span><span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">,</span> <span class="n">out</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">imsize</span><span class="p">,</span> <span class="n">scaleoutput</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">tar</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">tar2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">tar</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">out2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="o">*</span><span class="n">tar</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">inp2</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">]</span>
+            <span class="n">inp2</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">]</span>
+            <span class="n">inp2</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tm</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">tar2</span><span class="p">[</span><span class="n">tar</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">om</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">out2</span><span class="p">[</span><span class="n">out</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">stitchimages</span><span class="p">([</span><span class="n">inp2</span><span class="p">,</span> <span class="n">tar2</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="n">out2</span><span class="o">/</span><span class="mi">255</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">imsize</span><span class="p">,</span> <span class="n">scaleoutput</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="ImageLabelLogger.makelog"><a class="viewcode-back" href="../../apiref/msdnet.loggers.html#msdnet.loggers.ImageLabelLogger.makelog">[docs]</a>    <span class="k">def</span> <span class="nf">makelog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_best.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getbest</span><span class="p">()))</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_worst.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getworst</span><span class="p">()))</span>
+        <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="o">+</span><span class="s1">&#39;_typical.png&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">toimage</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">getmedian</span><span class="p">()))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

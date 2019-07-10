@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.data module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.dilations module" href="msdnet.dilations.html" />
+    <link rel="prev" title="msdnet package" href="msdnet.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.gpuoperations.html">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.data module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.data">
+<span id="msdnet-data-module"></span><h1>msdnet.data module<a class="headerlink" href="#module-msdnet.data" title="Permalink to this headline">¶</a></h1>
+<p>Module for image data input.</p>
+<p>Below, <img class="math" src="../_images/math/398cad24af82a5b99f3ac5ee202782b41cffd7b6.png" alt="N_{c}"/> is the number of image channels, and <img class="math" src="../_images/math/0aefc30aeceb904304cf9023b18b12961d2c31c3.png" alt="N_{x} \times N_{y}"/> the image dimensions in pixels.</p>
+<dl class="class">
+<dt id="msdnet.data.DataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">DataPoint</code><a class="reference internal" href="../_modules/msdnet/data.html#DataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.DataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class for a single data point (input image with corresponding target image)</p>
+<dl class="method">
+<dt id="msdnet.data.DataPoint.input">
+<em class="property">property </em><code class="sig-name descname">input</code><a class="headerlink" href="#msdnet.data.DataPoint.input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.target">
+<em class="property">property </em><code class="sig-name descname">target</code><a class="headerlink" href="#msdnet.data.DataPoint.target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Target image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.mask">
+<em class="property">property </em><code class="sig-name descname">mask</code><a class="headerlink" href="#msdnet.data.DataPoint.mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mask image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.getinputarray">
+<em class="property">abstract </em><code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#DataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.DataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.gettargetarray">
+<em class="property">abstract </em><code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#DataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.DataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#DataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.DataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.DataPoint.getall">
+<code class="sig-name descname">getall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#DataPoint.getall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.DataPoint.getall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image, target image, and mask image (when given).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.OnlyAllDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">OnlyAllDataPoint</code><a class="reference internal" href="../_modules/msdnet/data.html#OnlyAllDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.DataPoint</span></code></a></p>
+<p>Base class for a single data point (input image with corresponding target image)
+that can only return all images at once (i.e. <cite>getall</cite>).</p>
+<dl class="attribute">
+<dt id="msdnet.data.OnlyAllDataPoint.errormsg">
+<code class="sig-name descname">errormsg</code><em class="property"> = 'Only getall supported'</em><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint.errormsg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OnlyAllDataPoint.getinputarray">
+<code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OnlyAllDataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OnlyAllDataPoint.gettargetarray">
+<code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OnlyAllDataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OnlyAllDataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OnlyAllDataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OnlyAllDataPoint.getall">
+<em class="property">abstract </em><code class="sig-name descname">getall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OnlyAllDataPoint.getall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OnlyAllDataPoint.getall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image, target image, and mask image (when given).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.BatchProvider">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">BatchProvider</code><span class="sig-paren">(</span><em class="sig-param">dlist</em>, <em class="sig-param">batchsize</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#BatchProvider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.BatchProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Object that returns small random batches of datapoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dlist</strong> – List of <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a>.</p></li>
+<li><p><strong>batchsize</strong> – Number of datapoints per batch.</p></li>
+<li><p><strong>seed</strong> – (optional) Random seed.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.BatchProvider.getbatch">
+<code class="sig-name descname">getbatch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#BatchProvider.getbatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.BatchProvider.getbatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return batch of datapoints.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.ArrayDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">ArrayDataPoint</code><span class="sig-paren">(</span><em class="sig-param">inputarray</em>, <em class="sig-param">targetarray=None</em>, <em class="sig-param">maskarray=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ArrayDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ArrayDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.DataPoint</span></code></a></p>
+<p>Datapoint with numpy array image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputarray</strong> – numpy array with input image (size: <img class="math" src="../_images/math/21f7d1ff74516dd10e5102c3f68f5acc67b26f08.png" alt="N_{c} \times N_{x} \times N_{y}"/>)</p></li>
+<li><p><strong>targetarray</strong> – (optional) numpy array with target image (size: <img class="math" src="../_images/math/21f7d1ff74516dd10e5102c3f68f5acc67b26f08.png" alt="N_{c} \times N_{x} \times N_{y}"/>)</p></li>
+<li><p><strong>maskarray</strong> – (optional) numpy array with mask image (size: <img class="math" src="../_images/math/21f7d1ff74516dd10e5102c3f68f5acc67b26f08.png" alt="N_{c} \times N_{x} \times N_{y}"/>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.ArrayDataPoint.getinputarray">
+<code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ArrayDataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ArrayDataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.ArrayDataPoint.gettargetarray">
+<code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ArrayDataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ArrayDataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.ArrayDataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ArrayDataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ArrayDataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.ImageFileDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">ImageFileDataPoint</code><span class="sig-paren">(</span><em class="sig-param">inputfile</em>, <em class="sig-param">targetfile=None</em>, <em class="sig-param">maskfile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ImageFileDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ImageFileDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.DataPoint</span></code></a></p>
+<p>Datapoint with image files. Supported are: TIFFs and most standard image formats (e.g. PNG and JPEG).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputfile</strong> – file name of input image</p></li>
+<li><p><strong>targetfile</strong> – (optional) file name of target image</p></li>
+<li><p><strong>maskfile</strong> – (optional) file name of mask image</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.ImageFileDataPoint.getinputarray">
+<code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ImageFileDataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ImageFileDataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.ImageFileDataPoint.gettargetarray">
+<code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ImageFileDataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ImageFileDataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.ImageFileDataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#ImageFileDataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.ImageFileDataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.OneHotDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">OneHotDataPoint</code><span class="sig-paren">(</span><em class="sig-param">datapoint</em>, <em class="sig-param">labels</em>, <em class="sig-param">maskunlabeled=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OneHotDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OneHotDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.DataPoint</span></code></a></p>
+<p>Datapoint that converts a data point with a labeled image to
+one-hot images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapoint</strong> – input <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a></p></li>
+<li><p><strong>labels</strong> – list of numberical labels in label image</p></li>
+<li><p><strong>maskunlabeled</strong> – (optional) whether to mask out unlabeled pixels</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.OneHotDataPoint.getinputarray">
+<code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OneHotDataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OneHotDataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OneHotDataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OneHotDataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OneHotDataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.OneHotDataPoint.gettargetarray">
+<code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#OneHotDataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.OneHotDataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.SlabDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">SlabDataPoint</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em>, <em class="sig-param">flip=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#SlabDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.SlabDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.DataPoint</span></code></a></p>
+<p>Datapoint that represents a slab of data points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapoints</strong> – list of <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a>.</p></li>
+<li><p><strong>flip</strong> – (optional) whether to augment data by also flipping slab.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.SlabDataPoint.getinputarray">
+<code class="sig-name descname">getinputarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#SlabDataPoint.getinputarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.SlabDataPoint.getinputarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.SlabDataPoint.gettargetarray">
+<code class="sig-name descname">gettargetarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#SlabDataPoint.gettargetarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.SlabDataPoint.gettargetarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return target image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.data.SlabDataPoint.getmaskarray">
+<code class="sig-name descname">getmaskarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#SlabDataPoint.getmaskarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.SlabDataPoint.getmaskarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mask image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.data.convert_to_slabs">
+<code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">convert_to_slabs</code><span class="sig-paren">(</span><em class="sig-param">datapoints</em>, <em class="sig-param">n_above_and_below</em>, <em class="sig-param">flip=False</em>, <em class="sig-param">reflective_boundary=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#convert_to_slabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.convert_to_slabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of datapoints (representing a 3D volume) to
+a list of datapoints of slabs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapoints</strong> – list of <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a>.</p></li>
+<li><p><strong>n_above_and_below</strong> – number of slices to take above and below each slice.</p></li>
+<li><p><strong>flip</strong> – (optional) whether to augment data by also flipping slab.</p></li>
+<li><p><strong>reflective_boundary</strong> – (optional) whether to use reflective boundary at top and bottom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.data.RotateAndFlipDataPoint">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.data.</code><code class="sig-name descname">RotateAndFlipDataPoint</code><span class="sig-paren">(</span><em class="sig-param">datapoint</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#RotateAndFlipDataPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.RotateAndFlipDataPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msdnet.data.OnlyAllDataPoint" title="msdnet.data.OnlyAllDataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">msdnet.data.OnlyAllDataPoint</span></code></a></p>
+<p>Datapoint that augments input datapoint with rotations and flips.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datapoint</strong> – input <a class="reference internal" href="#msdnet.data.DataPoint" title="msdnet.data.DataPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataPoint</span></code></a>.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.data.RotateAndFlipDataPoint.getall">
+<code class="sig-name descname">getall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/data.html#RotateAndFlipDataPoint.getall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.data.RotateAndFlipDataPoint.getall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input image, target image, and mask image (when given).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.dilations.html" class="btn btn-neutral float-right" title="msdnet.dilations module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.html" class="btn btn-neutral float-left" title="msdnet package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

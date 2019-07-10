@@ -1,0 +1,7 @@
+msdnet.operations module
+========================
+
+.. automodule:: msdnet.operations
+   :members:
+   :undoc-members:
+   :show-inheritance:

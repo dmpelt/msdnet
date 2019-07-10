@@ -1,0 +1,7 @@
+msdnet.train module
+===================
+
+.. automodule:: msdnet.train
+   :members:
+   :undoc-members:
+   :show-inheritance:

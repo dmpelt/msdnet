@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>msdnet.gpuoperations module &mdash; Mixed-Scale Dense Network 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="msdnet.loggers module" href="msdnet.loggers.html" />
+    <link rel="prev" title="msdnet.dilations module" href="msdnet.dilations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Mixed-Scale Dense Network
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="msdnet.html">msdnet package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="msdnet.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="msdnet.data.html">msdnet.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.dilations.html">msdnet.dilations module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">msdnet.gpuoperations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.loggers.html">msdnet.loggers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.network.html">msdnet.network module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.operations.html">msdnet.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.store.html">msdnet.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.train.html">msdnet.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.utils.html">msdnet.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msdnet.validate.html">msdnet.validate module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="msdnet.html#module-msdnet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mixed-Scale Dense Network</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="msdnet.html">msdnet package</a> &raquo;</li>
+        
+      <li>msdnet.gpuoperations module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/msdnet.gpuoperations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msdnet.gpuoperations">
+<span id="msdnet-gpuoperations-module"></span><h1>msdnet.gpuoperations module<a class="headerlink" href="#module-msdnet.gpuoperations" title="Permalink to this headline">¶</a></h1>
+<p>Module implementing network operations on GPU using Numba.</p>
+<dl class="function">
+<dt id="msdnet.gpuoperations.get1dgridsize">
+<code class="sig-prename descclassname">msdnet.gpuoperations.</code><code class="sig-name descname">get1dgridsize</code><span class="sig-paren">(</span><em class="sig-param">sz</em>, <em class="sig-param">tpb=1024</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#get1dgridsize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.get1dgridsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return CUDA grid size for 1d arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sz</strong> – input array size</p></li>
+<li><p><strong>tpb</strong> – (optional) threads per block</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.gpuoperations.get2dgridsize">
+<code class="sig-prename descclassname">msdnet.gpuoperations.</code><code class="sig-name descname">get2dgridsize</code><span class="sig-paren">(</span><em class="sig-param">sz</em>, <em class="sig-param">tpb=(8</em>, <em class="sig-param">8)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#get2dgridsize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.get2dgridsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return CUDA grid size for 2d arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sz</strong> – input array size</p></li>
+<li><p><strong>tpb</strong> – (optional) threads per block</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="msdnet.gpuoperations.GPUImageData">
+<em class="property">class </em><code class="sig-prename descclassname">msdnet.gpuoperations.</code><code class="sig-name descname">GPUImageData</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">dl</em>, <em class="sig-param">nin</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Object that represents a set of 2D images on GPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> – total shape of all images</p></li>
+<li><p><strong>dl</strong> – list of dilations in the network</p></li>
+<li><p><strong>nin</strong> – number of input images of network</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.set_block_size">
+<code class="sig-name descname">set_block_size</code><span class="sig-paren">(</span><em class="sig-param">imshape</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.set_block_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.set_block_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set CUDA grid sizes to be used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.setimages">
+<code class="sig-name descname">setimages</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.setimages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.setimages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set data to set of images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ims</strong> – set of images</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.setscalars">
+<code class="sig-name descname">setscalars</code><span class="sig-paren">(</span><em class="sig-param">scl</em>, <em class="sig-param">start=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.setscalars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.setscalars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set each image to a scalar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scl</strong> – scalar values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.fill">
+<code class="sig-name descname">fill</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.fill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set image data to single scalar value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> – scalar value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return copy of image data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add scalar to single image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> – scalar to add</p></li>
+<li><p><strong>i</strong> – index of image to add value to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.mult">
+<code class="sig-name descname">mult</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.mult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.mult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply single image with value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> – value</p></li>
+<li><p><strong>i</strong> – index of image to multiply</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.prepare_forw_conv">
+<code class="sig-name descname">prepare_forw_conv</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.prepare_forw_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.prepare_forw_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for forward convolutions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> – convolution filters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.forw_conv">
+<code class="sig-name descname">forw_conv</code><span class="sig-paren">(</span><em class="sig-param">i</em>, <em class="sig-param">outidx</em>, <em class="sig-param">dl</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.forw_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.forw_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform forward convolutions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – image index to compute</p></li>
+<li><p><strong>outidx</strong> – image index to write output to</p></li>
+<li><p><strong>dl</strong> – dilation list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.prepare_back_conv">
+<code class="sig-name descname">prepare_back_conv</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.prepare_back_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.prepare_back_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for backward convolutions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> – convolution filters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.back_conv">
+<code class="sig-name descname">back_conv</code><span class="sig-paren">(</span><em class="sig-param">outidx</em>, <em class="sig-param">dl</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.back_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.back_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform backward convolutions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outidx</strong> – image index to write output to</p></li>
+<li><p><strong>dl</strong> – dilation list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.relu">
+<code class="sig-name descname">relu</code><span class="sig-paren">(</span><em class="sig-param">i</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply ReLU to single image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.relu2">
+<code class="sig-name descname">relu2</code><span class="sig-paren">(</span><em class="sig-param">i</em>, <em class="sig-param">dat</em>, <em class="sig-param">j</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.relu2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.relu2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply backpropagation ReLU to single image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.combine_all_all">
+<code class="sig-name descname">combine_all_all</code><span class="sig-paren">(</span><em class="sig-param">dat</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.combine_all_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.combine_all_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute linear combinations of images.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.prepare_gradient">
+<code class="sig-name descname">prepare_gradient</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.prepare_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.prepare_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare for gradient computation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.filtergradientfull">
+<code class="sig-name descname">filtergradientfull</code><span class="sig-paren">(</span><em class="sig-param">ims</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.filtergradientfull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.filtergradientfull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradients for filters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.weightgradientall">
+<code class="sig-name descname">weightgradientall</code><span class="sig-paren">(</span><em class="sig-param">delta</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.weightgradientall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.weightgradientall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradients for weights.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.sumall">
+<code class="sig-name descname">sumall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.sumall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.sumall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute image sums.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="msdnet.gpuoperations.GPUImageData.softmax">
+<code class="sig-name descname">softmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#GPUImageData.softmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.GPUImageData.softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute softmax.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="msdnet.gpuoperations.fastmult_impl">
+<code class="sig-prename descclassname">msdnet.gpuoperations.</code><code class="sig-name descname">fastmult_impl</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">out</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#fastmult_impl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.fastmult_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="msdnet.gpuoperations.fastsumall_impl">
+<code class="sig-prename descclassname">msdnet.gpuoperations.</code><code class="sig-name descname">fastsumall_impl</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">out</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/msdnet/gpuoperations.html#fastsumall_impl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#msdnet.gpuoperations.fastsumall_impl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="msdnet.loggers.html" class="btn btn-neutral float-right" title="msdnet.loggers module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="msdnet.dilations.html" class="btn btn-neutral float-left" title="msdnet.dilations module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D. M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
