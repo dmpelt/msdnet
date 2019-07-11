@@ -23,7 +23,7 @@ Development of the Mixed-Scale Dense Convolutional Neural Network method was sup
 To install this code in a conda environment, run:
 
 ```bash
-conda install -c defaults -c conda-forge -c dmpelt msdnet
+conda install -c conda-forge msdnet
 ```
 
 In other environments, the code can be installed by running:
