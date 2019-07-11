@@ -1,3 +1,5 @@
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/msdnet/badges/version.svg)](https://anaconda.org/conda-forge/msdnet) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/msdnet/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/msdnet) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/msdnet/badges/platforms.svg)](https://anaconda.org/conda-forge/msdnet) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/msdnet/badges/license.svg)](https://anaconda.org/conda-forge/msdnet) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/msdnet/badges/downloads.svg)](https://anaconda.org/conda-forge/msdnet)
+
 Python implementation of the Mixed-Scale Dense Convolutional Neural Network.
 
 * [\[Latest Release\]](https://github.com/dmpelt/msdnet/releases/latest)
