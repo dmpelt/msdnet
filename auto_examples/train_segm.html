@@ -171,7 +171,7 @@
 <span id="sphx-glr-auto-examples-train-segm-py"></span><h1>Example 03: Train a network for segmentation<a class="headerlink" href="#example-03-train-a-network-for-segmentation" title="Permalink to this headline">¶</a></h1>
 <p>This script trains a MS-D network for segmentation (i.e. labeling)
 Run generatedata.py first to generate required training data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
 <span class="kn">import</span> <span class="nn">msdnet</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
@@ -181,7 +181,7 @@ Run generatedata.py first to generate required training data.</p>
 <span class="c1"># Create main network object for segmentation, with 100 layers,</span>
 <span class="c1"># [1,10] dilations, 1 input channel, 5 output channels (one for each label),</span>
 <span class="c1"># using the GPU (set gpu=False to use CPU)</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">SegmentationMSDNet</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dilations</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">SegmentationMSDNet</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dilations</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Initialize network parameters</span>
 <span class="n">n</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
@@ -234,10 +234,10 @@ Run generatedata.py first to generate required training data.</p>
 <span class="c1"># Log error metrics to file</span>
 <span class="n">filelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">FileLogger</span><span class="p">(</span><span class="s1">&#39;log_segm.txt&#39;</span><span class="p">)</span>
 <span class="c1"># Log typical, worst, and best images to image files</span>
-<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLabelLogger</span><span class="p">(</span><span class="s1">&#39;log_segm&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLabelLogger</span><span class="p">(</span><span class="s1">&#39;log_segm&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># Log typical, worst, and best images to image files</span>
 <span class="c1"># Output probability map for a single channel (in this case, channel 3)</span>
-<span class="n">singlechannellog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_segm_singlechannel&#39;</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">singlechannellog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_segm_singlechannel&#39;</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Train network until program is stopped manually</span>
 <span class="c1"># Network parameters are saved in segm_params.h5</span>
@@ -248,13 +248,13 @@ Run generatedata.py first to generate required training data.</p>
 </div>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-train-segm-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/922a50851c746eaa93ed772faba4b21a/train_segm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">train_segm.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/fda7ff47d3745f37d886540d0ddfe54c/train_segm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">train_segm.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/546702788fd8f1b9efae9b9cb6272c10/train_segm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">train_segm.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/f74c0bd614cf73210be1b1774fdba089/train_segm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">train_segm.ipynb</span></code></a></p>
 </div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 

@@ -173,7 +173,7 @@
 segmentation (i.e. labeling)
 Run generatedata.py first to generate required training data, and
 train_segm.py to generate a partially trained network.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
 <span class="kn">import</span> <span class="nn">msdnet</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
@@ -211,17 +211,17 @@ train_segm.py to generate a partially trained network.</p>
 <span class="c1"># datsv = msdnet.utils.load_simple_data(&#39;train/noisy/*.tiff&#39;, &#39;train/label/*.tiff&#39;, augment=False, labels=[0,1,2,3,4])</span>
 
 <span class="c1"># Load network, training algorithm, and validation object from checkpoint of previous training</span>
-<span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">restore_training</span><span class="p">(</span><span class="s1">&#39;segm_params.checkpoint&#39;</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">SegmentationMSDNet</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamAlgorithm</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">validate</span><span class="o">.</span><span class="n">MSEValidation</span><span class="p">,</span> <span class="n">datsv</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">restore_training</span><span class="p">(</span><span class="s1">&#39;segm_params.checkpoint&#39;</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">SegmentationMSDNet</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamAlgorithm</span><span class="p">,</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">validate</span><span class="o">.</span><span class="n">MSEValidation</span><span class="p">,</span> <span class="n">datsv</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Log error metrics to console</span>
 <span class="n">consolelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ConsoleLogger</span><span class="p">()</span>
 <span class="c1"># Log error metrics to file</span>
 <span class="n">filelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">FileLogger</span><span class="p">(</span><span class="s1">&#39;log_segm.txt&#39;</span><span class="p">)</span>
 <span class="c1"># Log typical, worst, and best images to image files</span>
-<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLabelLogger</span><span class="p">(</span><span class="s1">&#39;log_segm&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLabelLogger</span><span class="p">(</span><span class="s1">&#39;log_segm&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># Log typical, worst, and best images to image files</span>
 <span class="c1"># Output probability map for a single channel (in this case, channel 3)</span>
-<span class="n">singlechannellog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_segm_singlechannel&#39;</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">singlechannellog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_segm_singlechannel&#39;</span><span class="p">,</span> <span class="n">chan_out</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Train network until program is stopped manually</span>
 <span class="c1"># Network parameters are saved in segm_params.h5</span>
@@ -232,13 +232,13 @@ train_segm.py to generate a partially trained network.</p>
 </div>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-resume-train-segm-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/b443079a24717af6664f0af61197f4da/resume_train_segm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">resume_train_segm.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/9c90563d4c06e3ddf9bdb0a0a9f1d0f6/resume_train_segm.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">resume_train_segm.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/4f1bc343bbad748338dc3af19e9d9dee/resume_train_segm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">resume_train_segm.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/7a60c70d3e997e4d20b4836f045ca54a/resume_train_segm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">resume_train_segm.ipynb</span></code></a></p>
 </div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 

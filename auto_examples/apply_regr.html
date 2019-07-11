@@ -172,17 +172,17 @@
 <p>This script applies a trained MS-D network for regression (i.e. denoising/artifact removal)
 Run generatedata.py first to generate required training data and train_regr.py to train
 a network.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
 <span class="kn">import</span> <span class="nn">msdnet</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1"># Make folder for output</span>
-<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Load network from file</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">MSDNet</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;regr_params.h5&#39;</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">MSDNet</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;regr_params.h5&#39;</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Process all test images</span>
 <span class="n">flsin</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;test/noisy/*.tiff&#39;</span><span class="p">))</span>
@@ -192,18 +192,18 @@ a network.</p>
     <span class="c1"># Compute network output</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
     <span class="c1"># Save network output to file</span>
-    <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s1">&#39;results/regr_{:05d}.tiff&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s1">&#39;results/regr_</span><span class="si">{:05d}</span><span class="s1">.tiff&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-apply-regr-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/9271baf6db12260eaa56efe25ace4882/apply_regr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">apply_regr.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/d430eacb2d75f3040da0ef7ad234b9a2/apply_regr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">apply_regr.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/57115a3d0fe209894c5298e12818bb0b/apply_regr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">apply_regr.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/d218437ab02529b6be4c56c20cf7b500/apply_regr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">apply_regr.ipynb</span></code></a></p>
 </div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 

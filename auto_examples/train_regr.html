@@ -171,7 +171,7 @@
 <span id="sphx-glr-auto-examples-train-regr-py"></span><h1>Example 01: Train a network for regression<a class="headerlink" href="#example-01-train-a-network-for-regression" title="Permalink to this headline">¶</a></h1>
 <p>This script trains a MS-D network for regression (i.e. denoising/artifact removal)
 Run generatedata.py first to generate required training data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import code</span>
 <span class="kn">import</span> <span class="nn">msdnet</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
@@ -181,7 +181,7 @@ Run generatedata.py first to generate required training data.</p>
 <span class="c1"># Create main network object for regression, with 100 layers,</span>
 <span class="c1"># [1,10] dilations, 1 input channel, 1 output channel, using</span>
 <span class="c1"># the GPU (set gpu=False to use CPU)</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">MSDNet</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dilations</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">MSDNet</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">dilations</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Initialize network parameters</span>
 <span class="n">n</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
@@ -230,7 +230,7 @@ Run generatedata.py first to generate required training data.</p>
 <span class="c1"># Log error metrics to file</span>
 <span class="n">filelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">FileLogger</span><span class="p">(</span><span class="s1">&#39;log_regr.txt&#39;</span><span class="p">)</span>
 <span class="c1"># Log typical, worst, and best images to image files</span>
-<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_regr&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">imagelog</span> <span class="o">=</span> <span class="n">msdnet</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">ImageLogger</span><span class="p">(</span><span class="s1">&#39;log_regr&#39;</span><span class="p">,</span> <span class="n">onlyifbetter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Train network until program is stopped manually</span>
 <span class="c1"># Network parameters are saved in regr_params.h5</span>
@@ -241,13 +241,13 @@ Run generatedata.py first to generate required training data.</p>
 </div>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-train-regr-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/e52068cd9e95c2eb23581ff0b54ed952/train_regr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">train_regr.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/b4c3b5845f64b970ae17ba37b9de8c3b/train_regr.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">train_regr.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/61ea6dca70e54ddf94a2826b395f32de/train_regr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">train_regr.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/af91ace0f567a3a772e96ebe2c71c0da/train_regr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">train_regr.ipynb</span></code></a></p>
 </div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
