@@ -149,6 +149,10 @@
             
   <div class="section" id="welcome-to-mixed-scale-dense-network-s-documentation">
 <h1>Welcome to Mixed-Scale Dense Network’s documentation!<a class="headerlink" href="#welcome-to-mixed-scale-dense-network-s-documentation" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://anaconda.org/conda-forge/msdnet"><img alt="https://anaconda.org/conda-forge/msdnet/badges/version.svg" src="https://anaconda.org/conda-forge/msdnet/badges/version.svg" /></a>
+<a class="reference external image-reference" href="https://anaconda.org/conda-forge/msdnet"><img alt="https://anaconda.org/conda-forge/msdnet/badges/latest_release_date.svg" src="https://anaconda.org/conda-forge/msdnet/badges/latest_release_date.svg" /></a>
+<a class="reference external image-reference" href="https://anaconda.org/conda-forge/msdnet"><img alt="https://anaconda.org/conda-forge/msdnet/badges/license.svg" src="https://anaconda.org/conda-forge/msdnet/badges/license.svg" /></a>
+<a class="reference external image-reference" href="https://anaconda.org/conda-forge/msdnet"><img alt="https://anaconda.org/conda-forge/msdnet/badges/downloads.svg" src="https://anaconda.org/conda-forge/msdnet/badges/downloads.svg" /></a>
 <p>Python implementation of the Mixed-Scale Dense Convolutional Neural Network.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/dmpelt/msdnet/releases/latest">[Latest Release]</a></p></li>
@@ -177,6 +181,12 @@
 </div>
 <p>The code requires the following Python modules: numpy, scipy, tifffile, scikit-image, psutil, h5py, tqdm, numba &gt;=0.41 .
 For compiling the code, the scikit-build module is required.</p>
+<p>To run on GPU (recommended), a CUDA-capable GPU must be present and CUDA drivers must be installed. In addition, please make
+sure that the version of the cudatoolkit package installed by conda matches the CUDA version of your drivers. Specific versions
+of cudatoolkit can be installed by running (where ‘X.X’ is the CUDA version, e.g. ‘10.0’):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install <span class="nv">cudatoolkit</span><span class="o">=</span>X.X
+</pre></div>
+</div>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
