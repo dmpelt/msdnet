@@ -35,6 +35,15 @@ python setup.py install
 The code requires the following Python modules: numpy, scipy, tifffile, scikit-image, psutil, h5py, tqdm, numba >=0.41 .
 For compiling the code, the scikit-build module is required.
 
+To run on GPU (recommended), a CUDA-capable GPU must be present and CUDA drivers must be installed. In addition, please make
+sure that the version of the cudatoolkit package installed by conda matches the CUDA version of your drivers. Specific versions
+of cudatoolkit can be installed by running (where 'X.X' is the CUDA version, e.g. '10.0'):
+
+```bash
+conda install cudatoolkit=X.X
+```
+
+
 # Usage
 
 Please see the included example scripts for usage information. The scripts and further documentation can be found here: https://dmpelt.github.io/msdnet/.
