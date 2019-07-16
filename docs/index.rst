@@ -6,6 +6,19 @@
 Welcome to Mixed-Scale Dense Network's documentation!
 =====================================================
 
+.. image:: https://anaconda.org/conda-forge/msdnet/badges/version.svg
+   :target: https://anaconda.org/conda-forge/msdnet
+
+.. image:: https://anaconda.org/conda-forge/msdnet/badges/latest_release_date.svg
+   :target: https://anaconda.org/conda-forge/msdnet
+
+.. image:: https://anaconda.org/conda-forge/msdnet/badges/license.svg
+   :target: https://anaconda.org/conda-forge/msdnet
+
+.. image:: https://anaconda.org/conda-forge/msdnet/badges/downloads.svg
+   :target: https://anaconda.org/conda-forge/msdnet
+
+
 Python implementation of the Mixed-Scale Dense Convolutional Neural Network.
 
 * `[Latest Release] <https://github.com/dmpelt/msdnet/releases/latest>`_
