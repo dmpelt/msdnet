@@ -28,7 +28,7 @@ class TestTraining(unittest.TestCase):
             log1.log(val)
             log2.log(val)
             log3.log(val)
-        n_load = msdnet.network.MSDNet.from_file('test_regr_params.h5')
+        n_load = msdnet.network.MSDNet.from_file('test_regr_params.h5', gpu=False)
         n_load.forward(inp_im)
     
     def test_segm_training(self):
@@ -56,7 +56,7 @@ class TestTraining(unittest.TestCase):
             log1.log(val)
             log2.log(val)
             log3.log(val)
-        n_load = msdnet.network.MSDNet.from_file('test_segm_params.h5')
+        n_load = msdnet.network.MSDNet.from_file('test_segm_params.h5', gpu=False)
         n_load.forward(inp_im)
 
 if __name__ == '__main__':
