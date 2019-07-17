@@ -5,9 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+* Travis and Appveyor continuous integration
+* Small documentation updates
+
 ### Changed
 
 ### Fixed
+
+* Loading of Windows C library for custom installations
 
 ### Removed
 
