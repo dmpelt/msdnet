@@ -13,5 +13,5 @@ install:
 
 script:
   - python setup.py install
-  - cd examples
-  - python -c "import msdnet"
+  - cd tests
+  - python traintest.py -v

@@ -33,5 +33,5 @@ install:
 # Not a .NET project, we build in the install step instead
 build: false
 test_script:
-  - cd examples
-  - python -c "import msdnet"
+  - cd tests
+  - python traintest.py -v
