@@ -21,25 +21,25 @@ a network.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 import tifffile
-import os
 import numpy as np
 
 # Make folder for output
-os.makedirs('results', exist_ok=True)
+outfolder = Path('results')
+outfolder.mkdir(exist_ok=True)
 
 # Load network from file
 n = msdnet.network.SegmentationMSDNet.from_file('segm_params.h5', gpu=True)
 
 # Process all test images
-flsin = sorted(glob.glob('test/noisy/*.tiff'))
+flsin = sorted((Path('test') / 'noisy').glob('*.tiff'))
 for i in range(len(flsin)):
     # Create datapoint with only input image
-    d = msdnet.data.ImageFileDataPoint(flsin[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]))
     # Compute network output
     output = n.forward(d.input)
     # Save labels with maximum probability to file (i.e. prediceted labels for each pixel)
-    tifffile.imsave('results/segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
+    tifffile.imsave(outfolder / 'segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
     # Save probability map of a single channel (here, channel 2) to file
-    tifffile.imsave('results/segm_prob_lab2_{:05d}.tiff'.format(i), output[2])
+    tifffile.imsave(outfolder / 'segm_prob_lab2_{:05d}.tiff'.format(i), output[2])
