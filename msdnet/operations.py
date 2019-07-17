@@ -25,6 +25,8 @@ if sys.platform == 'darwin':
     lib = ctypes.CDLL(str(libpath))
 elif os.name == 'nt':
     libpath = Path(__file__).parent.parent.parent.parent / 'bin' / 'coperations.dll'
+    if not libpath.exists():
+        libpath = Path(__file__).parent.parent / 'bin' / 'coperations.dll'
     lib = ctypes.WinDLL(str(libpath))
 else:
     libpath = Path(__file__).parent / 'libcoperations.so'
