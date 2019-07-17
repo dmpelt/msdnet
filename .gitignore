@@ -7,6 +7,10 @@ examples/*.txt
 examples/*.checkpoint
 examples/*/*.tiff
 examples/*/*/*.tiff
+tests/*.h5
+tests/*.png
+tests/*.txt
+tests/*.checkpoint
 .vscode/
 
 
