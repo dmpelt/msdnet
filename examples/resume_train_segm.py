@@ -22,17 +22,17 @@ train_segm.py to generate a partially trained network.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 
 # Define training data
 # First, create lists of input files (noisy) and target files (labels)
-flsin = sorted(glob.glob('train/noisy/*.tiff'))
-flstg = sorted(glob.glob('train/label/*.tiff'))
+flsin = sorted((Path('train') / 'noisy').glob('*.tiff'))
+flstg = sorted((Path('train') / 'label').glob('*.tiff'))
 # Create list of datapoints (i.e. input/target pairs)
 dats = []
 for i in range(len(flsin)):
     # Create datapoint with file names
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     # Convert datapoint to one-hot, using labels 0, 1, 2, 3, and 4,
     # which are the labels given in each label TIFF file.
     d_oh = msdnet.data.OneHotDataPoint(d, [0,1,2,3,4])
@@ -47,11 +47,11 @@ for i in range(len(flsin)):
 bprov = msdnet.data.BatchProvider(dats,1)
 
 # Define validation data (not using augmentation)
-flsin = sorted(glob.glob('val/noisy/*.tiff'))
-flstg = sorted(glob.glob('val/label/*.tiff'))
+flsin = sorted((Path('val') / 'noisy').glob('*.tiff'))
+flstg = sorted((Path('val') / 'label').glob('*.tiff'))
 datsv = []
 for i in range(len(flsin)):
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     d_oh = msdnet.data.OneHotDataPoint(d, [0,1,2,3,4])
     datsv.append(d_oh)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:

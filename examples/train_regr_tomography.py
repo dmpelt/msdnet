@@ -20,7 +20,7 @@ Run generatedata.py first to generate required training data.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 
 # Define dilations in [1,10] as in paper.
 dilations = msdnet.dilations.IncrementDilations(10)
@@ -35,13 +35,13 @@ n.initialize()
 
 # Define training data
 # First, create lists of input files (low quality) and target files (high quality)
-flsin = sorted(glob.glob('tomo_train/lowqual/*.tiff'))
-flstg = sorted(glob.glob('tomo_train/highqual/*.tiff'))
+flsin = sorted((Path('tomo_train') / 'lowqual').glob('*.tiff'))
+flstg = sorted((Path('tomo_train') / 'highqual').glob('*.tiff'))
 # Create list of datapoints (i.e. input/target pairs)
 dats = []
 for i in range(len(flsin)):
     # Create datapoint with file names
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     # Add datapoint to list
     dats.append(d)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
@@ -61,11 +61,11 @@ n.normalizeinout(dats)
 bprov = msdnet.data.BatchProvider(dats,1)
 
 # Define validation data (not using augmentation)
-flsin = sorted(glob.glob('tomo_val/lowqual/*.tiff'))
-flstg = sorted(glob.glob('tomo_val/highqual/*.tiff'))
+flsin = sorted((Path('tomo_val') / 'lowqual').glob('*.tiff'))
+flstg = sorted((Path('tomo_val') / 'highqual').glob('*.tiff'))
 datsv = []
 for i in range(len(flsin)):
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     datsv.append(d)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
 # datsv = msdnet.utils.load_simple_data('tomo_val/lowqual/*.tiff', 'tomo_val/highqual/*.tiff', augment=False)

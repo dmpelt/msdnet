@@ -20,7 +20,7 @@ Run generatedata.py first to generate required training data.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 
 # Define dilations in [1,10] as in paper.
 dilations = msdnet.dilations.IncrementDilations(10)
@@ -35,13 +35,13 @@ n.initialize()
 
 # Define training data
 # First, create lists of input files (noisy) and target files (noiseless)
-flsin = sorted(glob.glob('train/noisy/*.tiff'))
-flstg = sorted(glob.glob('train/noiseless/*.tiff'))
+flsin = sorted((Path('train') / 'noisy').glob('*.tiff'))
+flstg = sorted((Path('train') / 'noiseless').glob('*.tiff'))
 # Create list of datapoints (i.e. input/target pairs)
 dats = []
 for i in range(len(flsin)):
     # Create datapoint with file names
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     # Augment data by rotating and flipping
     d_augm = msdnet.data.RotateAndFlipDataPoint(d)
     # Add augmented datapoint to list
@@ -57,11 +57,11 @@ n.normalizeinout(dats)
 bprov = msdnet.data.BatchProvider(dats,1)
 
 # Define validation data (not using augmentation)
-flsin = sorted(glob.glob('val/noisy/*.tiff'))
-flstg = sorted(glob.glob('val/noiseless/*.tiff'))
+flsin = sorted((Path('val') / 'noisy').glob('*.tiff'))
+flstg = sorted((Path('val') / 'noiseless').glob('*.tiff'))
 datsv = []
 for i in range(len(flsin)):
-    d = msdnet.data.ImageFileDataPoint(flsin[i],flstg[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
     datsv.append(d)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
 # datsv = msdnet.utils.load_simple_data('val/noisy/*.tiff', 'val/noiseless/*.tiff', augment=False)

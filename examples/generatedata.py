@@ -20,7 +20,7 @@ This script generates 100 training images, 25 validation images, and
 
 import numpy as np
 import tifffile
-import os
+from pathlib import Path
 
 n = 256
 nit = 24
@@ -61,33 +61,35 @@ def generate():
     imn = im+np.random.normal(size=im.shape)
     return imn, im, l
 
-os.makedirs('train',exist_ok=True)
-os.makedirs('train/noisy',exist_ok=True)
-os.makedirs('train/noiseless',exist_ok=True)
-os.makedirs('train/label',exist_ok=True)
+pth = Path('train')
+pth.mkdir(exist_ok=True)
+(pth / 'noisy').mkdir(exist_ok=True)
+(pth / 'noiseless').mkdir(exist_ok=True)
+(pth / 'label').mkdir(exist_ok=True)
 for i in range(100):
     imn, im, l = generate()
-    tifffile.imsave('train/noisy/{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave('train/noiseless/{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave('train/label/{:05d}.tiff'.format(i), l.astype(np.uint8))
+    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
     
-os.makedirs('val',exist_ok=True)
-os.makedirs('val/noisy',exist_ok=True)
-os.makedirs('val/noiseless',exist_ok=True)
-os.makedirs('val/label',exist_ok=True)
+pth = Path('val')
+pth.mkdir(exist_ok=True)
+(pth / 'noisy').mkdir(exist_ok=True)
+(pth / 'noiseless').mkdir(exist_ok=True)
+(pth / 'label').mkdir(exist_ok=True)
 for i in range(25):
     imn, im, l = generate()
-    tifffile.imsave('val/noisy/{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave('val/noiseless/{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave('val/label/{:05d}.tiff'.format(i), l.astype(np.uint8))
+    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
     
-os.makedirs('test',exist_ok=True)
-os.makedirs('test/noisy',exist_ok=True)
-os.makedirs('test/noiseless',exist_ok=True)
-os.makedirs('test/label',exist_ok=True)
+pth = Path('test')
+pth.mkdir(exist_ok=True)
+(pth / 'noisy').mkdir(exist_ok=True)
+(pth / 'noiseless').mkdir(exist_ok=True)
+(pth / 'label').mkdir(exist_ok=True)
 for i in range(10):
     imn, im, l = generate()
-    tifffile.imsave('test/noisy/{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave('test/noiseless/{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave('test/label/{:05d}.tiff'.format(i), l.astype(np.uint8))
-    
+    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))    

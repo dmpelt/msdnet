@@ -21,22 +21,22 @@ a network.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 import tifffile
-import os
 
 # Make folder for output
-os.makedirs('results', exist_ok=True)
+outfolder = Path('results')
+outfolder.mkdir(exist_ok=True)
 
 # Load network from file
 n = msdnet.network.MSDNet.from_file('regr_params.h5', gpu=True)
 
 # Process all test images
-flsin = sorted(glob.glob('test/noisy/*.tiff'))
+flsin = sorted((Path('test') / 'noisy').glob('*.tiff'))
 for i in range(len(flsin)):
     # Create datapoint with only input image
-    d = msdnet.data.ImageFileDataPoint(flsin[i])
+    d = msdnet.data.ImageFileDataPoint(str(flsin[i]))
     # Compute network output
     output = n.forward(d.input)
     # Save network output to file
-    tifffile.imsave('results/regr_{:05d}.tiff'.format(i), output[0])
+    tifffile.imsave(outfolder / 'regr_{:05d}.tiff'.format(i), output[0])

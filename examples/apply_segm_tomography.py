@@ -21,26 +21,26 @@ a network.
 
 # Import code
 import msdnet
-import glob
+from pathlib import Path
 import tifffile
-import os
 import numpy as np
 
 # Make folder for output
-os.makedirs('tomo_results', exist_ok=True)
+outfolder = Path('tomo_results')
+outfolder.mkdir(exist_ok=True)
 
 # Load network from file
 n = msdnet.network.SegmentationMSDNet.from_file('tomo_segm_params.h5', gpu=True)
 
 # Process all test images
-flsin = sorted(glob.glob('tomo_test/lowqual/*.tiff'))
-dats = [msdnet.data.ImageFileDataPoint(f) for f in flsin]
+flsin = sorted((Path('tomo_test') / 'lowqual').glob('*.tiff'))
+dats = [msdnet.data.ImageFileDataPoint(str(f)) for f in flsin]
 # Convert input slices to input slabs (i.e. multiple slices as input)
 dats = msdnet.data.convert_to_slabs(dats, 2, flip=False)
 for i in range(len(flsin)):
     # Compute network output
     output = n.forward(dats[i].input)
     # Save labels with maximum probability to file (i.e. prediceted labels for each pixel)
-    tifffile.imsave('tomo_results/segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
+    tifffile.imsave(outfolder / 'segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
     # Save probability map of a single channel (here, channel 2) to file
-    tifffile.imsave('tomo_results/segm_prob_lab2_{:05d}.tiff'.format(i), output[2])
+    tifffile.imsave(outfolder / 'segm_prob_lab2_{:05d}.tiff'.format(i), output[2])
