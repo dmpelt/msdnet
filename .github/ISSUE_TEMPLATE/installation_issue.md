@@ -2,7 +2,7 @@
 name: Installation issue
 about: Create a report to help us improve
 title: "[INSTALLATION] --Put short description here--"
-labels: bug
+labels: installation
 assignees: ''
 
 ---
