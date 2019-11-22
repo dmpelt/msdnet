@@ -474,10 +474,5 @@ class SigmoidMSDNet(MSDNet):
         if returnoutput:
             return out.copy()
     
-    def backward(self, im, inputdelta=False):
-        err = im.copy()
-        operations.sigmoidderiv(err, self.sigm_out)
-        super().backward(err, inputdelta=inputdelta)
-    
     def normalizeoutput(self, datapoints):
         pass
