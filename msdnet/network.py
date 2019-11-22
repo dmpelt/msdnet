@@ -457,3 +457,27 @@ class SegmentationMSDNet(MSDNet):
     
     def normalizeoutput(self, datapoints):
         pass
+
+class SigmoidMSDNet(MSDNet):
+    """Main implementation of a Mixed-Scale Dense network, with the sigmoid
+    activation function in the final layer.
+    
+    Same parameters as :class:`MSDNet`.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def forward(self, im, returnoutput=True):
+        out = super().forward(im, returnoutput=True)
+        operations.sigmoid(out)
+        self.sigm_out = out
+        if returnoutput:
+            return out.copy()
+    
+    def backward(self, im, inputdelta=False):
+        err = im.copy()
+        operations.sigmoidderiv(err, self.sigm_out)
+        super().backward(err, inputdelta=inputdelta)
+    
+    def normalizeoutput(self, datapoints):
+        pass

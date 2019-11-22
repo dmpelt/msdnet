@@ -93,6 +93,11 @@ def conv2d(inp, out, f, d):
 def filtergradient2d(inp, delta, ux, uy):
     return lib.gradientmap2d(asfloatp(inp.ravel()), asfloatp(delta.ravel()), asuint(inp.shape[0]), asuint(inp.shape[1]), asintp(ux.ravel()), asintp(uy.ravel()))
 
+def sigmoid(inp):
+    lib.sigmoid(asfloatp(inp.ravel()), aslong(inp.size))
+
+def sigmoidderiv(inp, im):
+    lib.sigmoidderiv(asfloatp(inp.ravel()), asfloatp(im.ravel()), aslong(inp.size))
 
 # Utility functions
 idx_list = {}

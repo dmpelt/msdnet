@@ -134,6 +134,22 @@ DECLDIR void softmax(float * const im, const unsigned long n, const unsigned int
     }
 }
 
+DECLDIR void sigmoid(float * const im, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        im[i]= 1/(1+expf(-im[i]));
+    }
+}
+
+DECLDIR void sigmoidderiv(float * const err, const float * const im, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        err[i] *= im[i] * (1 - im[i]);
+    }
+}
+
 DECLDIR long double squaresum(const float * const a, const unsigned long n){
     long double sum=0;
     long i;
