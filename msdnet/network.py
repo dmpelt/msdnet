@@ -457,3 +457,17 @@ class SegmentationMSDNet(MSDNet):
     
     def normalizeoutput(self, datapoints):
         pass
+
+class NumberMSDNet(MSDNet):
+    """Main implementation of a Mixed-Scale Dense network for segmentation.
+    
+    Same parameters as :class:`MSDNet`.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def forward(self, im, returnoutput=True):
+        out = super().forward(im)
+        out[:] = out.sum()
+        if returnoutput:
+            return out.copy()
