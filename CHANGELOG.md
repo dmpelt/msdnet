@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * Loading of Windows C library for custom installations
 * Cross-platform examples
+* Saving and loading Python lists in network files
 
 ### Removed
 
