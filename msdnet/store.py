@@ -31,7 +31,10 @@ def get_dict(fn, grpname):
 
 def __store_grp_in_dict(grp, dct):
     for key, val in grp.attrs.items():
-        dct[key] = val.item()
+        try:
+            dct[key] = val.item()
+        except ValueError: # Fix for old network files with python lists in attributes
+            dct[key] = val
     
     for key, val in grp.items():
         if isinstance(val, h5py.Group):
@@ -65,7 +68,7 @@ def __store_dict_in_grp(grp, dct):
         if isinstance(val, dict):
             newgrp = grp.create_group(key)
             __store_dict_in_grp(newgrp, val)
-        elif isinstance(val, np.ndarray):
+        elif isinstance(val, (np.ndarray, list)):
             grp.create_dataset(key, data=val)
         else:
             a[key] = val
