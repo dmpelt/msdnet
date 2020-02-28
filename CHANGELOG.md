@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* Improve speed for gradient update
+
 ### Fixed
 
 * Loading of Windows C library for custom installations

@@ -284,24 +284,16 @@ class MSDNet(Network):
         return np.hstack([self.wg.ravel(),fgu.ravel(),self.og.ravel(),self.oog.ravel()]).ravel()
     
     def updategradients_internal(self, u):
-        w = self.w.ravel()
-        idx = 0
-        for i in range(w.shape[0]):
-            w[i] += u[idx]
-            idx+=1
+        def update(v, idx):
+            v = v.ravel()
+            end = idx + len(v)
+            v += u[idx:end]
+            return end
+        idx = update(self.w, 0)
         for f in self.f:
-            fr = f.ravel()
-            for i in range(fr.shape[0]):
-                fr[i] += u[idx]
-                idx+=1
-        o = self.o.ravel()
-        for i in range(o.shape[0]):
-            o[i] += u[idx]
-            idx+=1
-        oo = self.oo.ravel()
-        for i in range(oo.shape[0]):
-            oo[i] += u[idx]
-            idx+=1
+            idx = update(f, idx)
+        idx = update(self.o, idx)
+        idx = update(self.oo, idx)
     
     def setinputscale(self, gamma, offset):
         """Set input normalization values."""
