@@ -22,7 +22,7 @@ a network.
 # Import code
 import msdnet
 from pathlib import Path
-import tifffile
+import imageio
 
 # Make folder for output
 outfolder = Path('results')
@@ -39,4 +39,4 @@ for i in range(len(flsin)):
     # Compute network output
     output = n.forward(d.input)
     # Save network output to file
-    tifffile.imsave(outfolder / 'regr_{:05d}.tiff'.format(i), output[0])
+    imageio.imsave(outfolder / 'regr_{:05d}.tiff'.format(i), output[0])

@@ -19,7 +19,7 @@ This script generates 100 training images, 25 validation images, and
 """
 
 import numpy as np
-import tifffile
+import imageio
 from pathlib import Path
 
 n = 256
@@ -68,9 +68,9 @@ pth.mkdir(exist_ok=True)
 (pth / 'label').mkdir(exist_ok=True)
 for i in range(100):
     imn, im, l = generate()
-    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
+    imageio.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    imageio.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    imageio.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
     
 pth = Path('val')
 pth.mkdir(exist_ok=True)
@@ -79,9 +79,9 @@ pth.mkdir(exist_ok=True)
 (pth / 'label').mkdir(exist_ok=True)
 for i in range(25):
     imn, im, l = generate()
-    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
+    imageio.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    imageio.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    imageio.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))
     
 pth = Path('test')
 pth.mkdir(exist_ok=True)
@@ -90,6 +90,6 @@ pth.mkdir(exist_ok=True)
 (pth / 'label').mkdir(exist_ok=True)
 for i in range(10):
     imn, im, l = generate()
-    tifffile.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
-    tifffile.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
-    tifffile.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))    
+    imageio.imsave(pth / 'noisy' / '{:05d}.tiff'.format(i), imn.astype(np.float32))
+    imageio.imsave(pth / 'noiseless' / '{:05d}.tiff'.format(i), im.astype(np.float32))
+    imageio.imsave(pth / 'label' / '{:05d}.tiff'.format(i), l.astype(np.uint8))    

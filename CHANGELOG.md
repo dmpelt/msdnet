@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* The tifffile package is no longer required
 * Improve speed for gradient update
 
 ### Fixed

@@ -20,7 +20,7 @@ This script generates tomographic reconstructions of phantom samples:
 """
 
 import numpy as np
-import tifffile
+import imageio
 from pathlib import Path
 import astra
 
@@ -66,7 +66,7 @@ for tpe in ['tomo_train', 'tomo_val', 'tomo_test']:
         sinogram_lq = sinogram + np.random.normal(size=sinogram.shape, scale=n/10)
         rec_hq = w.reconstruct('FBP', sinogram_hq)
         rec_lq = w.reconstruct('FBP', sinogram_lq)
-        tifffile.imsave(tpe_path / 'lowqual' / '{:05d}.tiff'.format(j), rec_lq)
-        tifffile.imsave(tpe_path / 'highqual' / '{:05d}.tiff'.format(j), rec_hq)
-        tifffile.imsave(tpe_path / 'label' / '{:05d}.tiff'.format(j), ph_label[j])
+        imageio.imsave(tpe_path / 'lowqual' / '{:05d}.tiff'.format(j), rec_lq)
+        imageio.imsave(tpe_path / 'highqual' / '{:05d}.tiff'.format(j), rec_hq)
+        imageio.imsave(tpe_path / 'label' / '{:05d}.tiff'.format(j), ph_label[j])
         
