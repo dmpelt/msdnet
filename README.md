@@ -35,7 +35,7 @@ In other environments, the code can be installed by running:
 python setup.py install
 ```
 
-The code requires the following Python modules: numpy, scipy, tifffile, scikit-image, psutil, h5py, tqdm, numba >=0.41 .
+The code requires the following Python modules: numpy, scipy, scikit-image, psutil, h5py, tqdm, numba >=0.41 .
 For compiling the code, the scikit-build module is required.
 
 To run on GPU (recommended), a CUDA-capable GPU must be present and CUDA drivers must be installed. In addition, please make

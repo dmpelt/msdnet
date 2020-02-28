@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+* The tifffile package is no longer required
+
 ### Fixed
 
 * Loading of Windows C library for custom installations
