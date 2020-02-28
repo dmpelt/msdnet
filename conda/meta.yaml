@@ -19,7 +19,6 @@ requirements:
   run:
     - python
     - numpy >=1.12
-    - tifffile
     - scikit-image
     - psutil
     - h5py

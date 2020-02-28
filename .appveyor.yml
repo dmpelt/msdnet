@@ -25,7 +25,7 @@ install:
     --set changeps1 no
     --set auto_update_conda no
     --set safety_checks disabled
-  - conda create -n msdnet -c conda-forge python=3.7 numpy scipy tifffile scikit-image psutil h5py tqdm numba scikit-build openmp
+  - conda create -n msdnet -c conda-forge python=3.7 numpy scipy imageio scikit-image psutil h5py tqdm numba scikit-build openmp
   - conda activate msdnet
   - conda info -a
   - conda list --explicit
