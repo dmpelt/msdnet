@@ -11,22 +11,24 @@
 //-----------------------------------------------------------------------
 
 #include <math.h>
-#include <omp.h>
 
 #ifdef _MSC_VER
 
 #define DECLDIR __declspec(dllexport)
 
+DECLDIR void set_threads(const unsigned int nthrd){}
+
 #else
 
 #define DECLDIR
 
-#endif
-
+#include <omp.h>
 // OpenMP set number of threads
 DECLDIR void set_threads(const unsigned int nthrd){
     omp_set_num_threads(nthrd);
 }
+
+#endif
 
 // Flattened array operations
 DECLDIR void relu(float * const data, const unsigned long n){
