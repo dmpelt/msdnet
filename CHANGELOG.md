@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * The tifffile package is no longer required
 * Improve speed for gradient update
+* Remove OpenMP support for Windows due to build problems
 
 ### Fixed
 
