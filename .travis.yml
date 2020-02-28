@@ -8,7 +8,7 @@ before_install:
   - conda update conda
 
 install:
-  - conda install -c conda-forge python=3.7 numpy scipy tifffile scikit-image psutil h5py tqdm numba scikit-build openmp
+  - conda install -c conda-forge python=3.7 numpy scipy imageio scikit-image psutil h5py tqdm numba scikit-build openmp
   - conda info -a
 
 script:
