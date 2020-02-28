@@ -22,7 +22,7 @@ a network.
 # Import code
 import msdnet
 from pathlib import Path
-import tifffile
+import imageio
 import numpy as np
 
 # Make folder for output
@@ -41,6 +41,6 @@ for i in range(len(flsin)):
     # Compute network output
     output = n.forward(dats[i].input)
     # Save labels with maximum probability to file (i.e. prediceted labels for each pixel)
-    tifffile.imsave(outfolder / 'segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
+    imageio.imsave(outfolder / 'segm_label_{:05d}.tiff'.format(i), np.argmax(output,0).astype(np.uint8))
     # Save probability map of a single channel (here, channel 2) to file
-    tifffile.imsave(outfolder / 'segm_prob_lab2_{:05d}.tiff'.format(i), output[2])
+    imageio.imsave(outfolder / 'segm_prob_lab2_{:05d}.tiff'.format(i), output[2])

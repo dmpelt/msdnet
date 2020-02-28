@@ -18,7 +18,6 @@ Below, :math:`N_{c}` is the number of image channels, and :math:`N_{x} \\times N
 
 import numpy as np
 import abc
-import tifffile
 import imageio
 import random
 import collections
@@ -156,9 +155,11 @@ class ImageFileDataPoint(DataPoint):
     
     def __readimage(self, fn):
         try:
-            im = tifffile.imread(fn)
-        except ValueError:
             im = imageio.imread(fn)
+        except Exception:
+            # require tifffile only if imageio fails
+            from skimage.external.tifffile import tifffile
+            im = tifffile.imread(fn)
         return self.__fix_image_dimensions(im)
 
     def getinputarray(self):
@@ -171,9 +172,11 @@ class ImageFileDataPoint(DataPoint):
         if self.mfn is None:
             return None
         try:
-            im = tifffile.imread(self.mfn)
-        except ValueError:
             im = imageio.imread(self.mfn, flatten=True)
+        except Exception:
+            # require tifffile only if imageio fails
+            from skimage.external.tifffile import tifffile
+            im = tifffile.imread(self.mfn)
         return im
 
 class OneHotDataPoint(DataPoint):
