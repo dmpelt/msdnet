@@ -155,7 +155,7 @@ class ImageFileDataPoint(DataPoint):
     
     def __readimage(self, fn):
         try:
-            im = imageio.imread(fn)
+            im = imageio.volread(fn)
         except Exception:
             # require tifffile only if imageio fails
             from skimage.external.tifffile import tifffile
@@ -172,11 +172,14 @@ class ImageFileDataPoint(DataPoint):
         if self.mfn is None:
             return None
         try:
-            im = imageio.imread(self.mfn, flatten=True)
-        except Exception:
-            # require tifffile only if imageio fails
-            from skimage.external.tifffile import tifffile
-            im = tifffile.imread(self.mfn)
+            im = imageio.volread(self.mfn, flatten=True)
+        except TypeError:
+            try:
+                im = imageio.volread(self.mfn)
+            except Exception:
+                # require tifffile only if imageio fails
+                from skimage.external.tifffile import tifffile
+                im = tifffile.imread(self.mfn)
         return im
 
 class OneHotDataPoint(DataPoint):
