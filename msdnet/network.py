@@ -287,7 +287,7 @@ class MSDNet(Network):
         def update(v, idx):
             v = v.ravel()
             end = idx + len(v)
-            v += u[idx:end]
+            v -= u[idx:end]
             return end
         idx = update(self.w, 0)
         for f in self.f:
@@ -436,9 +436,12 @@ class MSDNet(Network):
 class SegmentationMSDNet(MSDNet):
     """Main implementation of a Mixed-Scale Dense network for segmentation.
     
-    Same parameters as :class:`MSDNet`.
+    Same parameters as :class:`MSDNet`, with additional:
+
+    :param softmaxderiv: whether to compute derivative of the softmax layer (default: True)
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, softmaxderiv=True, **kwargs):
+        self.deriv = softmaxderiv
         super().__init__(*args,**kwargs)
     
     def forward(self, im, returnoutput=True):
@@ -446,6 +449,15 @@ class SegmentationMSDNet(MSDNet):
         self.out.softmax()
         if returnoutput:
             return self.out.copy()
+    
+    def backward(self, im, inputdelta=False):
+        if self.deriv:
+            tmp = np.zeros_like(im)
+            act = self.out.copy()
+            operations.softmaxderiv(tmp, im, act)
+            im = tmp
+        super().backward(im, inputdelta=inputdelta)
+
     
     def normalizeoutput(self, datapoints):
         pass

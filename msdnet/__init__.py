@@ -17,3 +17,4 @@ from . import data
 from . import validate
 from . import loggers
 from . import utils
+from . import loss

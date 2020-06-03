@@ -12,7 +12,7 @@
 
 """Module for training networks."""
 
-from . import store
+from . import store, loss
 import numpy as np
 import abc
 import tqdm
@@ -63,13 +63,14 @@ class AdamAlgorithm(TrainAlgorithm):
     :param b2: ADAM parameter
     :param e: ADAM parameter
     """
-    def __init__(self,  network, a = 0.001, b1 = 0.9, b2 = 0.999, e = 10**-8):
+    def __init__(self,  network, loss = None, a = 0.001, b1 = 0.9, b2 = 0.999, e = 10**-8):
         self.a = a
         self.b1 = b1
         self.b1t = b1
         self.b2 = b2
         self.b2t = b2
         self.e = e
+        self.loss = loss
         if network:
             self.npars = network.getgradients().shape[0]
             self.m = np.zeros(self.npars)
@@ -81,7 +82,7 @@ class AdamAlgorithm(TrainAlgorithm):
         for d in dlist:
             inp, tar, msk = d.getall()
             out = n.forward(inp)
-            err = tar - out
+            err = self.loss.deriv(out, tar)
             if msk is None:
                 tpix += err.size
             else:

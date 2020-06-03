@@ -90,6 +90,20 @@ DECLDIR float sum(const float * const inp, const unsigned long n){
     return (float)sum;
 }
 
+DECLDIR float masksum(const float * const inp, const float * const msk, const unsigned long n, const unsigned long nim){
+    long double sum=0;
+    long i, j;
+    #pragma omp parallel for reduction(+:sum) private(i, j)
+    for(i=0; i<n; i++){
+        if (msk[i] > 0){
+            for(j=0; j<nim; j++){
+                sum+=inp[j*n+i];
+            }
+        }
+    }
+    return (float)sum;
+}
+
 DECLDIR float std(const float * const inp, const float mn, const unsigned long n){
     long double sum=0;
     long i;
@@ -133,6 +147,56 @@ DECLDIR void softmax(float * const im, const unsigned long n, const unsigned int
                 im[j*n+i] /= sm;
             }
         }
+    }
+}
+
+DECLDIR void diff(float * const out, const float * const a, const float * const b, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        out[i] = a[i] - b[i];
+    }
+}
+
+DECLDIR void squarediff(float * const out, const float * const a, const float * const b, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        out[i] = (a[i] - b[i])*(a[i] - b[i]);
+    }
+}
+DECLDIR void softmaxderiv(float * const out, const float * const err, const float * const act, const unsigned long n, const unsigned int nim){
+    #pragma omp parallel
+    {
+        float tmp;
+        long i;
+        unsigned int j, k;
+        #pragma omp for
+        for(i=0; i<n; i++){
+            for(j=0; j<nim; j++){
+                tmp = err[j*n+i]*act[j*n+i]*(1-act[j*n+i]);
+                for(k=0; k<j; k++) tmp -= act[j*n+i] * act[k*n+i] * err[k*n+i];
+                for(k=j+1; k<nim; k++) tmp -= act[j*n+i] * act[k*n+i] * err[k*n+i];
+                out[j*n+i] = tmp;
+            }
+        }
+    }
+}
+
+DECLDIR void crossentropylog(float * const out, const float * const im, const float * const tar, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        if (tar[i]>0) out[i] = - logf(im[i]);
+    }
+}
+
+
+DECLDIR void crossentropyderiv(float * const out, const float * const im, const float * const tar, const unsigned long n){
+    long i;
+    #pragma omp parallel for private(i)
+    for(i=0; i<n; i++){
+        if (tar[i]>0) out[i] = - 1/im[i];
     }
 }
 

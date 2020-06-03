@@ -50,6 +50,7 @@ def asintp(arr):
     return arr.ctypes.data_as(cintp)
 
 lib.sum.restype = ctypes.c_float
+lib.masksum.restype = ctypes.c_float
 lib.std.restype = ctypes.c_float
 lib.multsum.restype = ctypes.c_float
 lib.squaresum.restype = ctypes.c_longdouble
@@ -64,6 +65,9 @@ def leakyrelu(inp, w):
 def sum(inp):
     return lib.sum(asfloatp(inp.ravel()), aslong(inp.size))
 
+def masksum(inp, msk):
+    return lib.masksum(asfloatp(inp.ravel()), asfloatp(msk.ravel()), aslong(inp.shape[1]*inp.shape[2]), aslong(inp.shape[0]))
+
 def std(inp, mn):
     return lib.std(asfloatp(inp.ravel()), asfloat(mn), aslong(inp.size))
 
@@ -73,8 +77,23 @@ def multsum(a, b):
 def softmax(inp):
     lib.softmax(asfloatp(inp.ravel()), aslong(inp[0].size), asuint(inp.shape[0]))
 
+def softmaxderiv(out, err, act):
+    lib.softmaxderiv(asfloatp(out.ravel()), asfloatp(err.ravel()), asfloatp(act.ravel()), aslong(err.shape[1]*err.shape[2]), asuint(err.shape[0]))
+
 def squaresum(a):
     return lib.squaresum(asfloatp(a.ravel()),aslong(a.size))
+
+def diff(out, a, b):
+    lib.diff(asfloatp(out.ravel()), asfloatp(a.ravel()), asfloatp(b.ravel()), aslong(a.size))
+
+def squarediff(out, a, b):
+    lib.squarediff(asfloatp(out.ravel()), asfloatp(a.ravel()), asfloatp(b.ravel()), aslong(a.size))
+
+def crossentropylog(out, im, tar):
+    lib.crossentropylog(asfloatp(out.ravel()), asfloatp(im.ravel()), asfloatp(tar.ravel()), aslong(im.size))
+
+def crossentropyderiv(out, im, tar):
+    lib.crossentropyderiv(asfloatp(out.ravel()), asfloatp(im.ravel()), asfloatp(tar.ravel()), aslong(im.size))
 
 def relu2(inp, out):
     lib.relu2(asfloatp(inp.ravel()), asfloatp(out.ravel()), aslong(inp.size))

@@ -11,46 +11,44 @@
 #-----------------------------------------------------------------------
 
 """
-Example 03: Train a network for segmentation
-============================================
+Example 09: Train a network for regression using a custom loss function
+=======================================================================
 
-This script trains a MS-D network for segmentation (i.e. labeling)
+This script trains a MS-D network for regression (i.e. denoising/artifact removal)
 Run generatedata.py first to generate required training data.
 """
 
 # Import code
 import msdnet
+import numpy as np
 from pathlib import Path
 
 # Define dilations in [1,10] as in paper.
 dilations = msdnet.dilations.IncrementDilations(10)
 
-# Create main network object for segmentation, with 100 layers,
-# [1,10] dilations, 1 input channel, 5 output channels (one for each label), 
-# using the GPU (set gpu=False to use CPU)
-n = msdnet.network.SegmentationMSDNet(100, dilations, 1, 5, gpu=True)
+# Create main network object for regression, with 100 layers,
+# [1,10] dilations, 1 input channel, 1 output channel, using
+# the GPU (set gpu=False to use CPU)
+n = msdnet.network.MSDNet(100, dilations, 1, 1, gpu=True)
 
 # Initialize network parameters
 n.initialize()
 
 # Define training data
-# First, create lists of input files (noisy) and target files (labels)
+# First, create lists of input files (noisy) and target files (noiseless)
 flsin = sorted((Path('train') / 'noisy').glob('*.tiff'))
-flstg = sorted((Path('train') / 'label').glob('*.tiff'))
+flstg = sorted((Path('train') / 'noiseless').glob('*.tiff'))
 # Create list of datapoints (i.e. input/target pairs)
 dats = []
 for i in range(len(flsin)):
     # Create datapoint with file names
     d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
-    # Convert datapoint to one-hot, using labels 0, 1, 2, 3, and 4,
-    # which are the labels given in each label TIFF file.
-    d_oh = msdnet.data.OneHotDataPoint(d, [0,1,2,3,4])
     # Augment data by rotating and flipping
-    d_augm = msdnet.data.RotateAndFlipDataPoint(d_oh)
+    d_augm = msdnet.data.RotateAndFlipDataPoint(d)
     # Add augmented datapoint to list
     dats.append(d_augm)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
-# dats = msdnet.utils.load_simple_data('train/noisy/*.tiff', 'train/label/*.tiff', augment=True, labels=[0,1,2,3,4])
+# dats = msdnet.utils.load_simple_data('train/noisy/*.tiff', 'train/noiseless/*.tiff', augment=True)
 
 # Normalize input and output of network to zero mean and unit variance using
 # training data images
@@ -61,36 +59,49 @@ bprov = msdnet.data.BatchProvider(dats,1)
 
 # Define validation data (not using augmentation)
 flsin = sorted((Path('val') / 'noisy').glob('*.tiff'))
-flstg = sorted((Path('val') / 'label').glob('*.tiff'))
+flstg = sorted((Path('val') / 'noiseless').glob('*.tiff'))
 datsv = []
 for i in range(len(flsin)):
     d = msdnet.data.ImageFileDataPoint(str(flsin[i]),str(flstg[i]))
-    d_oh = msdnet.data.OneHotDataPoint(d, [0,1,2,3,4])
-    datsv.append(d_oh)
+    datsv.append(d)
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
-# datsv = msdnet.utils.load_simple_data('train/noisy/*.tiff', 'train/label/*.tiff', augment=False, labels=[0,1,2,3,4])
+# datsv = msdnet.utils.load_simple_data('val/noisy/*.tiff', 'val/noiseless/*.tiff', augment=False)
 
-# Select loss function
-celoss = msdnet.loss.CrossEntropyLoss()
+# Define custom loss fuction, in this case L1 loss.
+class L1Loss(msdnet.loss.Loss):
+    '''Computes L1-norm loss function.'''
+    def loss(self, im, tar):
+        '''Computes loss function for each pixel.'''
+        err = np.zeros_like(tar)
+        err[:] = np.abs(tar - im)
+        return err
 
-# Validate with loss function
-val = msdnet.validate.LossValidation(datsv, loss=celoss)
+    def deriv(self, im, tar):
+        '''Computes derivative of loss function.'''
+        err = np.zeros_like(tar)
+        err[im<tar] = -1
+        err[im>tar] = 1
+        return err
+
+# Use custom loss function for training algorithm
+# and validation.
+l1loss = L1Loss()
+
+# Validate with Mean-Squared Error
+val = msdnet.validate.LossValidation(datsv, loss=l1loss)
 
 # Use ADAM training algorithms
-t = msdnet.train.AdamAlgorithm(n, loss=celoss)
+t = msdnet.train.AdamAlgorithm(n, loss=l1loss)
 
 # Log error metrics to console
 consolelog = msdnet.loggers.ConsoleLogger()
 # Log error metrics to file
-filelog = msdnet.loggers.FileLogger('log_segm.txt')
+filelog = msdnet.loggers.FileLogger('log_regr_customloss.txt')
 # Log typical, worst, and best images to image files
-imagelog = msdnet.loggers.ImageLabelLogger('log_segm', onlyifbetter=True)
-# Log typical, worst, and best images to image files
-# Output probability map for a single channel (in this case, channel 3)
-singlechannellog = msdnet.loggers.ImageLogger('log_segm_singlechannel', chan_out=3, onlyifbetter=True)
+imagelog = msdnet.loggers.ImageLogger('log_regr_customloss', onlyifbetter=True)
 
 # Train network until program is stopped manually
-# Network parameters are saved in segm_params.h5
+# Network parameters are saved in regr_params.h5
 # Validation is run after every len(datsv) (=25)
 # training steps.
-msdnet.train.train(n, t, val, bprov, 'segm_params.h5',loggers=[consolelog,filelog,imagelog,singlechannellog], val_every=len(datsv))
+msdnet.train.train(n, t, val, bprov, 'regr_params_customloss.h5',loggers=[consolelog,filelog,imagelog], val_every=len(datsv))
