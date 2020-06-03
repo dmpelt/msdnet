@@ -73,6 +73,9 @@ def multsum(a, b):
 def softmax(inp):
     lib.softmax(asfloatp(inp.ravel()), aslong(inp[0].size), asuint(inp.shape[0]))
 
+def softmaxderiv(out, err, act):
+    lib.softmaxderiv(asfloatp(out.ravel()), asfloatp(err.ravel()), asfloatp(act.ravel()), aslong(err.shape[1]*err.shape[2]), asuint(err.shape[0]))
+
 def squaresum(a):
     return lib.squaresum(asfloatp(a.ravel()),aslong(a.size))
 

@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+* Ability to apply softmax derivative
+  Note: this is enabled by default
 * Travis and Appveyor continuous integration
 * Small documentation updates
 * Unit tests

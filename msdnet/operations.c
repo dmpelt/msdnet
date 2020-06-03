@@ -136,6 +136,26 @@ DECLDIR void softmax(float * const im, const unsigned long n, const unsigned int
     }
 }
 
+DECLDIR void softmaxderiv(float * const out, const float * const err, const float * const act, const unsigned long n, const unsigned int nim){
+    #pragma omp parallel
+    {
+        float tmp;
+        long i;
+        unsigned int j, k;
+        #pragma omp for
+        for(i=0; i<n; i++){
+            for(j=0; j<nim; j++){
+                tmp = err[j*n+i]*act[j*n+i]*(1-act[j*n+i]);
+                for(k=0; k<j; k++) tmp -= act[j*n+i] * act[k*n+i] * err[k*n+i];
+                for(k=j+1; k<nim; k++) tmp -= act[j*n+i] * act[k*n+i] * err[k*n+i];
+                out[j*n+i] = tmp;
+            }
+        }
+    }
+}
+
+
+
 DECLDIR long double squaresum(const float * const a, const unsigned long n){
     long double sum=0;
     long i;
