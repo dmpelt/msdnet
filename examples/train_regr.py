@@ -66,11 +66,14 @@ for i in range(len(flsin)):
 # Note: The above can also be achieved using a utility function for such 'simple' cases:
 # datsv = msdnet.utils.load_simple_data('val/noisy/*.tiff', 'val/noiseless/*.tiff', augment=False)
 
-# Validate with Mean-Squared Error
-val = msdnet.validate.MSEValidation(datsv)
+# Select loss function
+l2loss = msdnet.loss.L2Loss()
+
+# Validate with loss function
+val = msdnet.validate.LossValidation(datsv, loss=l2loss)
 
 # Use ADAM training algorithms
-t = msdnet.train.AdamAlgorithm(n)
+t = msdnet.train.AdamAlgorithm(n, loss=l2loss)
 
 # Log error metrics to console
 consolelog = msdnet.loggers.ConsoleLogger()

@@ -60,6 +60,11 @@ for i in range(len(flsin)):
 # Load network, training algorithm, and validation object from checkpoint of previous training
 n, t, val = msdnet.train.restore_training('segm_params.checkpoint', msdnet.network.SegmentationMSDNet, msdnet.train.AdamAlgorithm, msdnet.validate.MSEValidation, datsv, gpu=True)
 
+# Select loss function
+celoss = msdnet.loss.CrossEntropyLoss()
+val.loss = celoss
+t.loss = celoss
+
 # Log error metrics to console
 consolelog = msdnet.loggers.ConsoleLogger()
 # Log error metrics to file

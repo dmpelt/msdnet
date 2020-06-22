@@ -73,11 +73,14 @@ for i in range(len(flsin)):
 # Convert input slices to input slabs (i.e. multiple slices as input)
 datsv = msdnet.data.convert_to_slabs(datsv, 2, flip=False)
 
-# Validate with Mean-Squared Error
-val = msdnet.validate.MSEValidation(datsv)
+# Select loss function
+l2loss = msdnet.loss.L2Loss()
+
+# Validate with loss function
+val = msdnet.validate.LossValidation(datsv, loss=l2loss)
 
 # Use ADAM training algorithms
-t = msdnet.train.AdamAlgorithm(n)
+t = msdnet.train.AdamAlgorithm(n, loss=l2loss)
 
 # Log error metrics to console
 consolelog = msdnet.loggers.ConsoleLogger()

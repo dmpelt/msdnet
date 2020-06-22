@@ -15,6 +15,7 @@ Module for defining and processing validation sets.
 
 from . import store
 from . import operations
+from . import loss
 import abc
 import numpy as np
 
@@ -71,16 +72,17 @@ class Validation(abc.ABC):
         store.store_dict(fn, 'validation', self.to_dict())
 
 
-class MetricValidation(Validation):
+class LossValidation(Validation):
     """Validation object that computes simple difference metrics.
 
     :param data: list of :class:`.data.DataPoint` objects to validate with.
     :param keep: (optional) whether to keep the best, worst, and typical result in memory.
     """
-    def __init__(self, data, keep=True):
+    def __init__(self, data, loss=None, keep=True):
         self.d = data
         self.keep = keep
         self.best = np.Inf
+        self.loss = loss
     
     def errorfunc(self, output, target, msk):
         """Error function used for validation.
@@ -91,7 +93,12 @@ class MetricValidation(Validation):
 
         :return: error function value.
         """
-        pass
+        lv = self.loss.lossvalue(output, target, msk)
+        if msk is None:
+            npix = target.size
+        else:
+            npix = target.shape[0]*(msk>0).sum()
+        return lv/npix
     
     def getbest(self):
         """Return the input, target, and network output for best result.
@@ -194,14 +201,7 @@ class MetricValidation(Validation):
         v.load_dict(dct)
         return v
 
-class MSEValidation(MetricValidation):
-    """Validation object that uses mean-squared error"""
-    
-    def errorfunc(self, output, target, msk):
-        err = output-target
-        npix = err.size
-        if not msk is None:
-            msk = (msk == 0)
-            err[:, msk] = 0
-            npix -= err.shape[0]*msk.sum()
-        return operations.squaresum(err)/npix
+# For backwards compatibility, uses L2 norm
+class MSEValidation(LossValidation):
+    def __init__(self, data, keep=True):
+        super().__init__(data, loss=loss.L2Loss(), keep=keep)
