@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+* Ability to choose stopping criterion
 * Ability to choose loss functions and define custom loss functions
 * Travis and Appveyor continuous integration
 * Small documentation updates
