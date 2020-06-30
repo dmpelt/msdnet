@@ -18,3 +18,4 @@ from . import validate
 from . import loggers
 from . import utils
 from . import loss
+from . import stoppingcriterion

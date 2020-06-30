@@ -12,7 +12,7 @@
 
 """Module for training networks."""
 
-from . import store, loss
+from . import store, loss, stoppingcriterion
 import numpy as np
 import abc
 import tqdm
@@ -152,7 +152,7 @@ def restore_training(fn, netclass, trainclass, valclass, valdata, gpu=True):
     return n, t, v
 
 
-def train(network, trainalg, validation, dataprov, outputfile, val_every=None, loggers=None, stopcrit=np.Inf, progress=False):
+def train(network, trainalg, validation, dataprov, outputfile, val_every=None, loggers=None, stopcrit=None, progress=False):
     """Train network.
 
     :param network: :class:`.network.Network` to train with   
@@ -162,11 +162,13 @@ def train(network, trainalg, validation, dataprov, outputfile, val_every=None, l
     :param outputfile: file to store trained network parameters in
     :param val_every: (optional) number of training steps before each validation step
     :param loggers: (optional) list of :class:`loggers.Logger` objects to perform logging.
-    :param stopcric: (optional) number of validations steps without improvement before stopping training
+    :param stopcric: (optional) stopping criterion to use.
     :param progress: (optional) whether to show progress during training
     """
     if not val_every:
         val_every = len(validation.d)
+    if not stopcrit:
+        stopcrit = stoppingcriterion.NeverStop()
     
     parts = outputfile.split('.')
     if len(parts)>1:
@@ -177,8 +179,13 @@ def train(network, trainalg, validation, dataprov, outputfile, val_every=None, l
     nstep = 0
     if progress:
         pbar = tqdm.tqdm(total=val_every)
+    
+    stopcrit.reset()
+    ntrainimages = 0
     while True:
-        trainalg.step(network, dataprov.getbatch())
+        batch = dataprov.getbatch()
+        trainalg.step(network, batch)
+        ntrainimages += len(batch)
         nstep+=1
         if progress:
             pbar.update()
@@ -190,18 +197,17 @@ def train(network, trainalg, validation, dataprov, outputfile, val_every=None, l
             network.to_file(checkpointfile, groupname='checkpoint')
             trainalg.to_file(checkpointfile)
             validation.to_file(checkpointfile)    
-            if validation.validate(network):
+            better_val =  validation.validate(network)
+            if better_val:
                 network.to_file(outputfile)
-                nworse=0
-            else:
-                nworse+=1
-                if nworse>=stopcrit:
-                    return
             if loggers:
                 try:
                     for log in loggers:
                         log.log(validation)
                 except TypeError:
                     loggers.log(validation)
+            if stopcrit.check(ntrainimages, better_val):
+                return
+            ntrainimages = 0 
             if progress:
                 pbar = tqdm.tqdm(total=val_every)
