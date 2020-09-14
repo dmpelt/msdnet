@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [2.0.0] - 2020-09-14
+
 ### Added
 
 * Ability to choose stopping criterion
@@ -30,4 +41,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/dmpelt/msdnet/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/dmpelt/msdnet/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/dmpelt/msdnet/compare/v1.0.0...v2.0.0
+
