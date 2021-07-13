@@ -13,11 +13,11 @@ Python implementation of the Mixed-Scale Dense Convolutional Neural Network.
 If you use this code in a publication, we would appreciate it if you would refer to:
 
 
-* Pelt, D. M., & Sethian, J. A. (2018). A mixed-scale dense convolutional neural network for image analysis. Proceedings of the National Academy of Sciences, 115(2), 254-259.
+* Pelt, D. M., & Sethian, J. A. (2018). A mixed-scale dense convolutional neural network for image analysis. Proceedings of the National Academy of Sciences, 115(2), 254-259. [link](https://www.pnas.org/content/115/2/254)
 
 If you use this code to improve tomographic reconstruction, we would appreciate it if you would refer to:
 
-* Pelt, D. M., Batenburg, K. J., & Sethian, J. A. (2018). Improving Tomographic Reconstruction from Limited Data Using Mixed-Scale Dense Convolutional Neural Networks. Journal of Imaging, 4(11), 128.
+* Pelt, D. M., Batenburg, K. J., & Sethian, J. A. (2018). Improving Tomographic Reconstruction from Limited Data Using Mixed-Scale Dense Convolutional Neural Networks. Journal of Imaging, 4(11), 128. [link](https://www.mdpi.com/2313-433X/4/11/128)
 
 Development of the Mixed-Scale Dense Convolutional Neural Network method was supported by CAMERA, jointly funded by The Office of Advanced Scientific Research (ASCR) and the Office of Basic Energy Sciences (BES) within the United States Department of Energy's Office of Science. Development of the Python implementation is supported by Centrum Wiskunde & Informatica (CWI), with financial support provided by The Netherlands Organisation for Scientific Research (NWO), project number 016.Veni.192.235.
 
