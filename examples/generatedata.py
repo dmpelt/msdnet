@@ -47,7 +47,7 @@ def generate():
     while i<nit:
         found=False
         while found==False:
-            x, y = (np.random.random(2)*(n-sz)).astype(np.int)
+            x, y = (np.random.random(2)*(n-sz)).astype(np.int32)
             if l[x:x+sz,y:y+sz].max()==0:
                 found=True
         vl = np.random.random()*0.8+0.2
