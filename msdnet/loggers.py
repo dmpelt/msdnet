@@ -89,7 +89,7 @@ def getheaderimage(width):
         header_dict[header_image.shape[1]] = header_image
         if width == header_image.shape[1]:
             return header_image
-    res_image = skt.rescale(header_image, width/1536, preserve_range=True, mode='constant', anti_aliasing=True, multichannel=False)
+    res_image = skt.rescale(header_image, width/1536, preserve_range=True, mode='constant', anti_aliasing=True, channel_axis=None)
     header_dict[width] = res_image
     return res_image
     
