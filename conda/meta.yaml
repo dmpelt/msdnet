@@ -18,12 +18,12 @@ requirements:
     - openmp
   run:
     - python
-    - numpy >=1.12
+    - numpy >=1.21
     - scikit-image
     - psutil
     - h5py
     - tqdm
-    - numba >=0.41
+    - numba >=0.55
     - cudatoolkit
     - imageio
     - openmp

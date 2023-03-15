@@ -91,7 +91,7 @@ class BatchProvider(object):
         self.d = dlist
         self.nd = len(self.d)
         self.rndm = np.random.RandomState(seed)
-        self.idx = np.arange(self.nd,dtype=np.int)
+        self.idx = np.arange(self.nd,dtype=np.int32)
         self.rndm.shuffle(self.idx)
         self.bsize = batchsize
         self.i = 0

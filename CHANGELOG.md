@@ -7,8 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ * Updated versions of python, numba and numpy
 
 ### Fixed
+ * Warnings from numpy and scikit
 
 ### Removed
 
